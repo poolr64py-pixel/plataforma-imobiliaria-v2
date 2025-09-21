@@ -1,0 +1,18 @@
+const axios = require('axios');
+
+async function testAPI() {
+  try {
+    console.log('Testando conexão com Strapi...');
+    const response = await axios.get('http://localhost:1337/api/imovels');
+    console.log('Sucesso! Total de imóveis:', response.data.meta.pagination.total);
+  } catch (error) {
+    if (error.response) {
+      console.log('Erro HTTP:', error.response.status);
+      console.log('Detalhes:', error.response.data);
+    } else {
+      console.log('Erro de rede:', error.message);
+    }
+  }
+}
+
+testAPI();

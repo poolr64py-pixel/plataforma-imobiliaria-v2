@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run init:*)",
+      "Bash(python:*)",
+      "Bash(npm start)",
+      "Bash(set PORT=3002)",
+      "Bash(cross-env:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd.exe /c \"taskkill /f /pid 14128\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

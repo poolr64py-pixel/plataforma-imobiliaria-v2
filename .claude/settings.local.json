@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(npm start)",
+      "Bash(curl:*)",
+      "Bash(npm run dev:*)",
+      "Bash(tasklist:*)",
+      "Bash(powershell:*)",
+      "Bash(set PORT=3001)",
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(taskkill:*)",
+      "Bash(del package-lock.json)",
+      "Bash(set PORT=3003)",
+      "Bash(npm cache clean:*)",
+      "Bash(npm install:*)",
+      "Bash(copy App-simple.js App.js)",
+      "Bash(copy \"imobiliario-frontend\\src\\App-simple.js\" \"imobiliario-frontend\\src\\App.js\")",
+      "Bash(copy \"App-simple.js\" \"App.js\")",
+      "Bash(copy:*)",
+      "Bash(grep:*)",
+      "WebFetch(domain:imobiliario-whitelabel.netlify.app)",
+      "Bash(tree:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

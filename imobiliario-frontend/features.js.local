@@ -1,0 +1,26 @@
+// src/config/features.js
+export const FEATURE_FLAGS = {
+  // Marketing Automation
+  MARKETING_AUTOMATION: process.env.REACT_APP_ENABLE_MARKETING_AUTOMATION === 'true',
+  LEAD_SCORING: process.env.REACT_APP_ENABLE_LEAD_SCORING === 'true',
+  EMAIL_SEQUENCES: process.env.REACT_APP_ENABLE_EMAIL_SEQUENCES === 'true',
+  WHATSAPP_AUTOMATION: process.env.REACT_APP_ENABLE_WHATSAPP_AUTOMATION === 'true',
+  
+  // SEO & Analytics
+  ADVANCED_SEO: process.env.REACT_APP_ENABLE_ADVANCED_SEO === 'true',
+  SCHEMA_MARKUP: process.env.REACT_APP_ENABLE_SCHEMA_MARKUP === 'true',
+  ANALYTICS_TRACKING: process.env.REACT_APP_ENABLE_ANALYTICS_TRACKING === 'true',
+  
+  // Futuras funcionalidades
+  VIRTUAL_TOURS: process.env.REACT_APP_ENABLE_VIRTUAL_TOURS === 'true',
+  AI_FILTERS: process.env.REACT_APP_ENABLE_AI_FILTERS === 'true',
+  
+  // Debug
+  DEBUG_MODE: process.env.REACT_APP_DEBUG_MODE === 'true',
+};
+
+export const useFeature = (featureName) => {
+  return FEATURE_FLAGS[featureName] || false;
+};
+
+export default FEATURE_FLAGS;

@@ -1,0 +1,808 @@
+import React, { useState, useEffect } from 'react';
+import { Search, MapPin, Heart, Share2, Phone, MessageCircle, Calendar, Eye, Star, Filter, X, ChevronLeft, ChevronRight, Menu, Bell, User, Home, Car, Bath, Bed, Square, TrendingUp, Clock, Users, Zap } from 'lucide-react';
+
+const RealEstateApp = () => {
+  const [selectedTenant, setSelectedTenant] = useState('Imobiliária Santos');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedFilters, setSelectedFilters] = useState({
+    type: 'all',
+    purpose: 'all',
+    priceRange: 'all',
+    rooms: 'all'
+  });
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [favorites, setFavorites] = useState(new Set());
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showContact, setShowContact] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Mock data para demonstração
+  const tenants = [
+    'Imobiliária Santos',
+    'Oliveira Imóveis',
+    'Prime Properties',
+    'Casa & Cia'
+  ];
+
+  const properties = [
+    {
+      id: 1,
+      title: 'Apartamento Moderno Vila Madalena',
+      price: 450000,
+      pricePerM2: 7500,
+      marketComparison: 5,
+      location: 'Vila Madalena, São Paulo - SP',
+      area: 65,
+      rooms: 2,
+      bathrooms: 1,
+      parking: 1,
+      floor: 8,
+      rating: 4.8,
+      reviews: 23,
+      views: 126,
+      type: 'apartment',
+      purpose: 'sale',
+      tags: ['Novo', 'Destaque', 'Tour 360°', 'IA Match'],
+      images: [
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop',
+        'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop',
+        'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop'
+      ],
+      description: 'Apartamento completamente reformado em uma das regiões mais valorizadas de São Paulo. Localização privilegiada com fácil acesso ao transporte público.',
+      features: ['Área de lazer completa', 'Portaria 24h', 'Churrasqueira', 'Academia'],
+      realtor: {
+        name: 'Maria Silva',
+        photo: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+        phone: '+55 11 99999-9999',
+        email: 'maria@santos.com.br'
+      }
+    },
+    {
+      id: 2,
+      title: 'Casa Família Jardins',
+      price: 850000,
+      pricePerM2: 6800,
+      marketComparison: -2,
+      location: 'Jardins, São Paulo - SP',
+      area: 125,
+      rooms: 3,
+      bathrooms: 2,
+      parking: 2,
+      type: 'house',
+      purpose: 'sale',
+      rating: 4.9,
+      reviews: 41,
+      views: 89,
+      tags: ['Oportunidade', 'Quintal'],
+      images: [
+        'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop',
+        'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&h=600&fit=crop'
+      ],
+      description: 'Casa espaçosa perfeita para famílias, com quintal amplo e localização privilegiada nos Jardins.',
+      features: ['Quintal amplo', 'Garagem coberta', 'Área gourmet', 'Segurança 24h'],
+      realtor: {
+        name: 'João Santos',
+        photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+        phone: '+55 11 88888-8888',
+        email: 'joao@santos.com.br'
+      }
+    },
+    {
+      id: 3,
+      title: 'Studio Centro Histórico',
+      price: 2800,
+      pricePerM2: 93,
+      marketComparison: 8,
+      location: 'Centro, São Paulo - SP',
+      area: 30,
+      rooms: 1,
+      bathrooms: 1,
+      parking: 0,
+      type: 'studio',
+      purpose: 'rent',
+      rating: 4.6,
+      reviews: 15,
+      views: 203,
+      tags: ['Mobiliado', 'Investimento'],
+      images: [
+        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'
+      ],
+      description: 'Studio moderno no coração de São Paulo, ideal para jovens profissionais ou investimento.',
+      features: ['Mobiliado', 'Internet inclusa', 'Próximo ao metrô'],
+      realtor: {
+        name: 'Ana Costa',
+        photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+        phone: '+55 11 77777-7777',
+        email: 'ana@santos.com.br'
+      }
+    }
+  ];
+
+  const toggleFavorite = (id) => {
+    const newFavorites = new Set(favorites);
+    if (newFavorites.has(id)) {
+      newFavorites.delete(id);
+    } else {
+      newFavorites.add(id);
+    }
+    setFavorites(newFavorites);
+  };
+
+  const openPropertyModal = (property) => {
+    setSelectedProperty(property);
+    setCurrentImageIndex(0);
+  };
+
+  const closeModal = () => {
+    setSelectedProperty(null);
+    setShowContact(false);
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 0
+    }).format(price);
+  };
+
+  const filteredProperties = properties.filter(property => {
+    if (selectedFilters.type !== 'all' && property.type !== selectedFilters.type) return false;
+    if (selectedFilters.purpose !== 'all' && property.purpose !== selectedFilters.purpose) return false;
+    if (searchQuery && !property.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !property.location.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    return true;
+  });
+
+  const PropertyCard = ({ property }) => (
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group">
+      <div className="relative">
+        <img 
+          src={property.images[0]} 
+          alt={property.title}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div className="absolute top-3 left-3 flex flex-wrap gap-1">
+          {property.tags.map((tag, idx) => (
+            <span key={idx} className={`px-2 py-1 text-xs font-medium rounded-full ${
+              tag === 'Novo' ? 'bg-green-100 text-green-800' :
+              tag === 'Destaque' ? 'bg-red-100 text-red-800' :
+              tag === 'Tour 360°' ? 'bg-blue-100 text-blue-800' :
+              tag === 'IA Match' ? 'bg-purple-100 text-purple-800' :
+              'bg-gray-100 text-gray-800'
+            }`}>
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="absolute top-3 right-3 flex gap-2">
+          <button 
+            onClick={(e) => {e.stopPropagation(); toggleFavorite(property.id);}}
+            className={`p-2 rounded-full backdrop-blur-sm ${
+              favorites.has(property.id) ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white'
+            } transition-colors duration-200`}
+          >
+            <Heart className="w-4 h-4" fill={favorites.has(property.id) ? 'currentColor' : 'none'} />
+          </button>
+          <button className="p-2 rounded-full bg-white/80 text-gray-600 hover:bg-blue-500 hover:text-white transition-colors duration-200">
+            <Share2 className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+      
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-2xl font-bold text-blue-600">{formatPrice(property.price)}</span>
+          <div className="flex items-center gap-1">
+            <span className="text-sm text-gray-500">
+              (~{formatPrice(property.pricePerM2)}/m²)
+            </span>
+            <TrendingUp className={`w-4 h-4 ${property.marketComparison > 0 ? 'text-green-500' : 'text-red-500'}`} />
+            <span className={`text-xs font-medium ${property.marketComparison > 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {property.marketComparison > 0 ? '+' : ''}{property.marketComparison}%
+            </span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-1 mb-3">
+          <MapPin className="w-4 h-4 text-gray-400" />
+          <span className="text-gray-600 text-sm">{property.location}</span>
+        </div>
+        
+        <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
+          <div className="flex items-center gap-1">
+            <Square className="w-4 h-4" />
+            <span>{property.area}m²</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Bed className="w-4 h-4" />
+            <span>{property.rooms}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Bath className="w-4 h-4" />
+            <span>{property.bathrooms}</span>
+          </div>
+          {property.parking > 0 && (
+            <div className="flex items-center gap-1">
+              <Car className="w-4 h-4" />
+              <span>{property.parking}</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+              <span className="text-sm font-medium">{property.rating}</span>
+              <span className="text-sm text-gray-500">({property.reviews})</span>
+            </div>
+            <div className="flex items-center gap-1 text-sm text-gray-500">
+              <Eye className="w-4 h-4" />
+              <span>{property.views}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex gap-2">
+          <button 
+            onClick={() => openPropertyModal(property)}
+            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
+          >
+            Ver Detalhes
+          </button>
+          <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm font-medium">
+            <MessageCircle className="w-4 h-4" />
+          </button>
+          <button className="bg-gray-100 text-gray-600 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors duration-200 text-sm font-medium">
+            <Calendar className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const PropertyModal = ({ property }) => {
+    if (!property) return null;
+
+    const nextImage = () => {
+      setCurrentImageIndex((prev) => (prev + 1) % property.images.length);
+    };
+
+    const prevImage = () => {
+      setCurrentImageIndex((prev) => (prev - 1 + property.images.length) % property.images.length);
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between z-10">
+            <button onClick={closeModal} className="flex items-center gap-2 text-gray-600 hover:text-gray-800">
+              <ChevronLeft className="w-5 h-5" />
+              <span>Voltar</span>
+            </button>
+            <div className="flex gap-2">
+              <button onClick={() => toggleFavorite(property.id)} className={`p-2 rounded-lg ${favorites.has(property.id) ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                <Heart className="w-5 h-5" fill={favorites.has(property.id) ? 'currentColor' : 'none'} />
+              </button>
+              <button className="p-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">
+                <Share2 className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative">
+            <img 
+              src={property.images[currentImageIndex]} 
+              alt={property.title}
+              className="w-full h-64 md:h-96 object-cover"
+            />
+            {property.images.length > 1 && (
+              <>
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                  {currentImageIndex + 1} / {property.images.length}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+              <h2 className="text-2xl font-bold mb-2 md:mb-0">{property.title}</h2>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-blue-600">{formatPrice(property.price)}</div>
+                <div className="text-sm text-gray-500">~{formatPrice(property.pricePerM2)}/m²</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 mb-4">
+              <MapPin className="w-5 h-5 text-gray-400" />
+              <span className="text-gray-600">{property.location}</span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Square className="w-6 h-6 mx-auto mb-1 text-gray-600" />
+                <div className="text-lg font-semibold">{property.area}m²</div>
+                <div className="text-sm text-gray-500">Área</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Bed className="w-6 h-6 mx-auto mb-1 text-gray-600" />
+                <div className="text-lg font-semibold">{property.rooms}</div>
+                <div className="text-sm text-gray-500">Quartos</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Bath className="w-6 h-6 mx-auto mb-1 text-gray-600" />
+                <div className="text-lg font-semibold">{property.bathrooms}</div>
+                <div className="text-sm text-gray-500">Banheiros</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Car className="w-6 h-6 mx-auto mb-1 text-gray-600" />
+                <div className="text-lg font-semibold">{property.parking}</div>
+                <div className="text-sm text-gray-500">Vagas</div>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Descrição</h3>
+              <p className="text-gray-600 leading-relaxed">{property.description}</p>
+            </div>
+
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Características</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {property.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-gray-600">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t pt-6 mb-6">
+              <h3 className="text-lg font-semibold mb-4">Corretor Responsável</h3>
+              <div className="flex items-center gap-4">
+                <img 
+                  src={property.realtor.photo} 
+                  alt={property.realtor.name}
+                  className="w-16 h-16 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <div className="font-semibold">{property.realtor.name}</div>
+                  <div className="text-sm text-gray-500">Especialista da região</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-3">
+              <button 
+                onClick={() => setShowContact(true)}
+                className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                WhatsApp
+              </button>
+              <button className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium flex items-center justify-center gap-2">
+                <Phone className="w-5 h-5" />
+                Ligar
+              </button>
+              <button className="flex-1 bg-gray-100 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-200 transition-colors duration-200 font-medium flex items-center justify-center gap-2">
+                <Calendar className="w-5 h-5" />
+                Agendar Visita
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ContactForm = () => {
+    if (!showContact) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-60 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl max-w-md w-full p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold">Interessado? Entre em contato!</h3>
+            <button onClick={() => setShowContact(false)} className="text-gray-400 hover:text-gray-600">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <form className="space-y-4">
+            <div>
+              <input 
+                type="text" 
+                placeholder="Seu nome"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <input 
+                type="email" 
+                placeholder="Seu e-mail"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <input 
+                type="tel" 
+                placeholder="Seu telefone"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option>Interesse em comprar</option>
+                <option>Interesse em vender</option>
+                <option>Interesse em alugar</option>
+                <option>Interesse em investir</option>
+              </select>
+            </div>
+            <div>
+              <textarea 
+                placeholder="Mensagem (opcional)"
+                rows={3}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              ></textarea>
+            </div>
+            <button 
+              type="submit"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+            >
+              Enviar
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Home className="w-8 h-8 text-blue-600" />
+                <span className="font-bold text-xl text-gray-800">RealEstate</span>
+              </div>
+              
+              <select 
+                value={selectedTenant}
+                onChange={(e) => setSelectedTenant(e.target.value)}
+                className="hidden md:block bg-gray-100 border-none rounded-lg px-3 py-1 text-sm font-medium"
+              >
+                {tenants.map(tenant => (
+                  <option key={tenant} value={tenant}>{tenant}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="hidden md:flex items-center gap-4 flex-1 max-w-md mx-8">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input 
+                  type="text"
+                  placeholder="Buscar por localização ou tipo..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button className="p-2 text-gray-600 hover:text-gray-800">
+                <Bell className="w-5 h-5" />
+              </button>
+              <button className="p-2 text-gray-600 hover:text-gray-800">
+                <User className="w-5 h-5" />
+              </button>
+              <button 
+                className="md:hidden p-2 text-gray-600 hover:text-gray-800"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                <Menu className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Search */}
+          <div className="md:hidden pb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input 
+                type="text"
+                placeholder="Buscar imóveis..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+        <div className="absolute inset-0 bg-black opacity-20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 py-12 md:py-20 text-center">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            Encontre o Imóvel dos Seus Sonhos
+          </h1>
+          <p className="text-lg md:text-xl mb-8 opacity-90">
+            Tecnologia avançada para conectar você ao imóvel perfeito
+          </p>
+          
+          <div className="flex items-center justify-center gap-6 text-sm mb-8">
+            <div className="flex items-center gap-2">
+              <Home className="w-5 h-5" />
+              <span>1.247 imóveis</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5" />
+              <span>Atualizado em tempo real</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              <span>+500 famílias</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
+            <button className="flex-1 bg-white text-blue-600 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200">
+              Ver Todos os Imóveis
+            </button>
+            <button className="flex-1 bg-blue-500 bg-opacity-20 backdrop-blur-sm border border-white border-opacity-30 text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-30 transition-colors duration-200">
+              🎯 Busca Personalizada
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Filters */}
+      <section className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-wrap gap-3">
+            <select 
+              value={selectedFilters.purpose}
+              onChange={(e) => setSelectedFilters(prev => ({...prev, purpose: e.target.value}))}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="all">Todos</option>
+              <option value="sale">Comprar</option>
+              <option value="rent">Alugar</option>
+            </select>
+            
+            <select 
+              value={selectedFilters.type}
+              onChange={(e) => setSelectedFilters(prev => ({...prev, type: e.target.value}))}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="all">Todos os Tipos</option>
+              <option value="apartment">Apartamento</option>
+              <option value="house">Casa</option>
+              <option value="studio">Studio</option>
+            </select>
+            
+            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option>Faixa de Preço</option>
+              <option>Até R$ 300.000</option>
+              <option>R$ 300.000 - R$ 500.000</option>
+              <option>R$ 500.000 - R$ 1.000.000</option>
+              <option>Acima de R$ 1.000.000</option>
+            </select>
+            
+            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option>Quartos</option>
+              <option>1 quarto</option>
+              <option>2 quartos</option>
+              <option>3 quartos</option>
+              <option>4+ quartos</option>
+            </select>
+            
+            <button className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors duration-200">
+              🤖 Filtro Inteligente
+            </button>
+            
+            <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <Filter className="w-4 h-4" />
+              Mais Filtros
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Signals */}
+      <section className="bg-blue-50 border-y">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-blue-700">
+            <div className="flex items-center gap-2">
+              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+              <span className="font-medium">4.9/5 (1.247 avaliações)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              <span>⚡ 3 pessoas visualizaram nos últimos 10 min</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span>🔥 12 imóveis vendidos esta semana</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Properties Grid */}
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">
+            Imóveis Disponíveis ({filteredProperties.length} resultados)
+          </h2>
+          <div className="text-sm text-gray-500">
+            Tenant: <span className="font-medium text-blue-600">{selectedTenant}</span>
+          </div>
+        </div>
+
+        {filteredProperties.length === 0 ? (
+          <div className="text-center py-12">
+            <Home className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">Nenhum imóvel encontrado</h3>
+            <p className="text-gray-500">Tente ajustar os filtros ou fazer uma nova busca</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProperties.map(property => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+          </div>
+        )}
+
+        {/* Load More */}
+        {filteredProperties.length > 0 && (
+          <div className="text-center mt-12">
+            <button className="bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+              Carregar Mais Imóveis
+            </button>
+          </div>
+        )}
+      </main>
+
+      {/* Team Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Nossa Equipe</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Especialistas locais prontos para ajudar você a encontrar o imóvel perfeito
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {properties.slice(0, 3).map((property, idx) => (
+              <div key={idx} className="text-center bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow duration-300">
+                <img 
+                  src={property.realtor.photo} 
+                  alt={property.realtor.name}
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-semibold mb-2">{property.realtor.name}</h3>
+                <p className="text-gray-600 mb-4">Especialista em {property.location.split(',')[0]}</p>
+                <div className="space-y-2 text-sm text-gray-500 mb-4">
+                  <div>{property.realtor.email}</div>
+                  <div>{property.realtor.phone}</div>
+                </div>
+                <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium flex items-center justify-center gap-2">
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Home className="w-8 h-8 text-blue-400" />
+                <span className="font-bold text-xl">{selectedTenant}</span>
+              </div>
+              <p className="text-gray-300 mb-4">
+                Sua parceira de confiança no mercado imobiliário
+              </p>
+              <div className="space-y-2 text-sm text-gray-300">
+                <div>📧 contato@{selectedTenant.toLowerCase().replace(/\s+/g, '')}.com.br</div>
+                <div>📞 (11) 9999-9999</div>
+                <div>📍 São Paulo, SP</div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Imóveis</h3>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li><a href="#" className="hover:text-white transition-colors">Apartamentos</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Casas</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Estudios</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Comerciais</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Serviços</h3>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li><a href="#" className="hover:text-white transition-colors">Comprar</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Vender</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Alugar</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Investir</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Links Úteis</h3>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Ajuda</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+            <p>&copy; 2025 {selectedTenant}. Todos os direitos reservados.</p>
+            <p className="mt-2">Desenvolvido com ❤️ usando tecnologia de ponta</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modals */}
+      <PropertyModal property={selectedProperty} />
+      <ContactForm />
+
+      {/* Mobile CTA Fixed */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-30">
+        <div className="flex gap-3">
+          <button className="flex-1 bg-green-600 text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2">
+            <MessageCircle className="w-5 h-5" />
+            WhatsApp
+          </button>
+          <button className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2">
+            <Phone className="w-5 h-5" />
+            Ligar
+          </button>
+        </div>
+      </div>
+
+      {/* Loading/Success Messages */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {/* Simulating real-time updates */}
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-lg animate-pulse">
+          🎉 Novo imóvel adicionado em Vila Madalena!
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RealEstateApp;
