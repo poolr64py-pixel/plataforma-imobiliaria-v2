@@ -5,8 +5,6 @@ import PropertyGallery from './components/PropertyGallery';
 import HeroGallery from './components/HeroGallery';
 
 function App() {
-  console.log('🚀 APP CARREGADO - Versão com 3 colunas');
-
   const [properties, setProperties] = useState([]);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -16,42 +14,37 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [showContactModal, setShowContactModal] = useState(false);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('price-asc');
 
   const propertiesPerPage = 9;
-
-  // Environment detection
   const isDevelopment = window.location.hostname === 'localhost';
   const API_BASE = isDevelopment ? 'http://localhost:3001' : process.env.REACT_APP_API_URL || 'https://api.terrasparaguay.com';
 
   const formatPrice = (price) => {
     if (!price || price === undefined || price === null) {
-      return 'Consultar preço';
+      return 'Consultar preco';
     }
-
     if (typeof price === 'string') {
       const numPrice = parseFloat(price.replace(/[^\d.-]/g, ''));
-      return isNaN(numPrice) ? 'Consultar preço' : `USD ${numPrice.toLocaleString()}`;
+      return isNaN(numPrice) ? 'Consultar preco' : `USD ${numPrice.toLocaleString()}`;
     }
-
     if (typeof price === 'number') {
       return `USD ${price.toLocaleString()}`;
     }
-
-    return 'Consultar preço';
+    return 'Consultar preco';
   };
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      console.log('App iniciado - testando conexão com backend...');
+      console.log('App iniciado - testando conexao com backend...');
       console.log('API Base URL:', API_BASE);
 
       const healthResponse = await fetch(`${API_BASE}/api/health`);
       const healthData = await healthResponse.json();
       console.log('Resposta do backend:', healthData);
-      setStatus('Conectado ✅');
+      setStatus('Conectado');
 
       const propertiesResponse = await fetch(`${API_BASE}/api/properties`);
       const propertiesData = await propertiesResponse.json();
@@ -61,41 +54,37 @@ function App() {
         console.log('=== ESTRUTURA PROPRIEDADES ===');
         console.log('Primeira propriedade completa:', propertiesData.data[0]);
         console.log('Total properties:', propertiesData.data.length);
-
         setProperties(propertiesData.data);
         setFilteredProperties(propertiesData.data);
       }
       setError(null);
     } catch (error) {
       console.error('Erro ao conectar:', error);
-      setStatus('Backend offline ❌');
+      setStatus('Backend offline');
       setError(error.message);
     } finally {
       setLoading(false);
     }
   }, [API_BASE]);
 
-  // SEO optimization
   useEffect(() => {
-    document.title = 'Terras Paraguay - Imóveis, Casas, Fazendas e Investimentos | Especialistas desde 2008';
-
+    document.title = 'Terras Paraguay - Imoveis, Casas, Fazendas e Investimentos | Especialistas desde 2008';
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Encontre os melhores imóveis no Paraguay: casas, apartamentos, fazendas e lotes. Mais de 15 anos conectando investidores brasileiros. Financiamento disponível e assessoria completa.');
+      metaDescription.setAttribute('content', 'Encontre os melhores imoveis no Paraguay: casas, apartamentos, fazendas e lotes. Mais de 15 anos conectando investidores brasileiros. Financiamento disponivel e assessoria completa.');
     }
 
-    // Add structured data for SEO
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "RealEstateAgent",
       "name": "Terras Paraguay",
-      "description": "Especialistas em imóveis no Paraguay há mais de 15 anos",
+      "description": "Especialistas em imoveis no Paraguay ha mais de 15 anos",
       "url": window.location.origin,
       "telephone": "+595971123456",
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "PY",
-        "addressLocality": "Asunción"
+        "addressLocality": "Asuncion"
       },
       "areaServed": ["Paraguay", "Brasil"],
       "serviceType": "Real Estate"
@@ -108,13 +97,12 @@ function App() {
       document.head.appendChild(script);
     }
     script.textContent = JSON.stringify(structuredData);
-
     fetchData();
   }, [fetchData]);
 
   const handleSearchResults = useCallback((filtered) => {
     setFilteredProperties(filtered);
-    setCurrentPage(1); // Reset to first page when filtering
+    setCurrentPage(1);
   }, []);
 
   const handlePropertyClick = (property) => {
@@ -133,22 +121,18 @@ function App() {
       newFavorites.add(id);
     }
     setFavorites(newFavorites);
-
-    // Save to localStorage
     localStorage.setItem('terras-paraguay-favorites', JSON.stringify([...newFavorites]));
   };
 
   const handleWhatsAppContact = (property) => {
     const message = property.title ?
-      `Olá! Tenho interesse na propriedade: ${property.title} - ${formatPrice(property.price)}. Localizada em ${property.location}. Gostaria de mais informações.` :
-      'Olá! Gostaria de mais informações sobre os imóveis disponíveis no Paraguay.';
-
+      `Ola! Tenho interesse na propriedade: ${property.title} - ${formatPrice(property.price)}. Localizada em ${property.location}. Gostaria de mais informacoes.` :
+      'Ola! Gostaria de mais informacoes sobre os imoveis disponiveis no Paraguay.';
     const phoneNumber = '+595971123456';
     const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
-  // Load favorites from localStorage
   useEffect(() => {
     const savedFavorites = localStorage.getItem('terras-paraguay-favorites');
     if (savedFavorites) {
@@ -156,95 +140,179 @@ function App() {
     }
   }, []);
 
-  // Sort properties
   const sortedProperties = [...filteredProperties].sort((a, b) => {
     switch (sortBy) {
-      case 'price-asc':
-        return (a.price || 0) - (b.price || 0);
-      case 'price-desc':
-        return (b.price || 0) - (a.price || 0);
-      case 'newest':
-        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-      case 'area-desc':
-        return (b.area || 0) - (a.area || 0);
-      default:
-        return 0;
+      case 'price-asc': return (a.price || 0) - (b.price || 0);
+      case 'price-desc': return (b.price || 0) - (a.price || 0);
+      case 'newest': return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      case 'area-desc': return (b.area || 0) - (a.area || 0);
+      default: return 0;
     }
   });
 
-  // Pagination
   const totalPages = Math.ceil(sortedProperties.length / propertiesPerPage);
   const startIndex = (currentPage - 1) * propertiesPerPage;
   const currentProperties = sortedProperties.slice(startIndex, startIndex + propertiesPerPage);
 
-  // Professional Header Component
-  const ProfessionalHeader = () => (
-    <header style={{
-      background: 'white',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 40,
-      borderBottom: '1px solid #e5e7eb'
-    }}>
+  // Cotacoes dinamicas
+  const CurrencyRates = () => {
+    const [rates, setRates] = useState({
+      USD_BRL: 'Carregando...',
+      USD_PYG: 'Carregando...',
+      BRL_PYG: 'Carregando...'
+    });
+    const [loadingRates, setLoadingRates] = useState(true);
+    const [lastUpdate, setLastUpdate] = useState(new Date());
+
+    const fetchRates = async () => {
+      try {
+        setLoadingRates(true);
+        const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const data = await response.json();
+        
+        if (data && data.rates) {
+          const usdToBrl = data.rates.BRL;
+          const usdToPyg = data.rates.PYG;
+          const brlToPyg = usdToPyg / usdToBrl;
+          
+          setRates({
+            USD_BRL: usdToBrl.toFixed(2),
+            USD_PYG: Math.round(usdToPyg).toLocaleString(),
+            BRL_PYG: Math.round(brlToPyg).toLocaleString()
+          });
+          setLastUpdate(new Date());
+        }
+      } catch (error) {
+        console.error('Erro ao buscar cotacoes:', error);
+        setRates({
+          USD_BRL: '5.45',
+          USD_PYG: '7.450',
+          BRL_PYG: '1.367'
+        });
+      } finally {
+        setLoadingRates(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchRates();
+      const interval = setInterval(fetchRates, 5 * 60 * 1000);
+      return () => clearInterval(interval);
+    }, []);
+
+    return (
       <div style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: '0 16px'
+        backgroundColor: '#1f2937',
+        color: 'white',
+        padding: '8px 0',
+        fontSize: '13px'
       }}>
         <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 16px',
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-between',
-          height: '64px'
+          alignItems: 'center'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: 'white', fontWeight: 'bold', fontSize: '14px' }}>TP</span>
-              </div>
-              <div>
-                <span style={{ fontWeight: 'bold', fontSize: '20px', color: '#1f2937' }}>Terras Paraguay</span>
-                <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '-4px' }}>Imóveis & Investimentos</div>
-              </div>
-            </div>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <span>USD/BRL: R$ {rates.USD_BRL}</span>
+            <span>USD/PYG: G {rates.USD_PYG}</span>
+            <span>BRL/PYG: G {rates.BRL_PYG}</span>
           </div>
-
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <a href="#inicio" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Início</a>
-            <a href="#imoveis" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Imóveis</a>
-            <a href="#servicos" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Serviços</a>
-            <a href="#sobre" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Sobre</a>
-            <a href="#contato" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Contato</a>
+          <div style={{ fontSize: '11px', opacity: '0.8' }}>
+            Atualizado: {lastUpdate.toLocaleTimeString()}
             <button
-              onClick={() => setShowContactModal(true)}
+              onClick={fetchRates}
+              disabled={loadingRates}
               style={{
-                background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.2)',
                 color: 'white',
-                padding: '8px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                fontWeight: '500',
-                cursor: 'pointer'
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontSize: '10px',
+                cursor: loadingRates ? 'not-allowed' : 'pointer',
+                marginLeft: '8px'
               }}
             >
-              Fale Conosco
+              {loadingRates ? '...' : 'Refresh'}
             </button>
-          </nav>
+          </div>
         </div>
       </div>
-    </header>
+    );
+  };
+
+  const ProfessionalHeader = () => (
+    <>
+      <CurrencyRates />
+      <header style={{
+        background: 'white',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 40,
+        borderBottom: '1px solid #e5e7eb'
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 16px'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '64px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <span style={{ color: 'white', fontWeight: 'bold', fontSize: '14px' }}>TP</span>
+                </div>
+                <div>
+                  <span style={{ fontWeight: 'bold', fontSize: '20px', color: '#1f2937' }}>Terras Paraguay</span>
+                  <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '-4px' }}>Imoveis e Investimentos</div>
+                </div>
+              </div>
+            </div>
+
+            <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+              <a href="#inicio" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Inicio</a>
+              <a href="#imoveis" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Imoveis</a>
+              <a href="#servicos" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Servicos</a>
+              <a href="#sobre" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Sobre</a>
+              <a href="#contato" style={{ color: '#374151', fontWeight: '500', textDecoration: 'none' }}>Contato</a>
+              <button
+                onClick={() => setShowContactModal(true)}
+                style={{
+                  background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                Fale Conosco
+              </button>
+            </nav>
+          </div>
+        </div>
+      </header>
+    </>
   );
 
-  // Hero Section Component
   const HeroSection = () => (
     <section style={{
       background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
@@ -261,21 +329,19 @@ function App() {
         gap: '32px',
         alignItems: 'start'
       }}>
-        {/* Left Gallery */}
-{window.innerWidth > 768 && (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center',
-    width: '100%',
-    maxWidth: '320px'  // ADICIONAR
-  }}>
-    <div style={{ width: '100%', maxWidth: '320px' }}>  {/* ADICIONAR WRAPPER */}
-      <HeroGallery properties={properties} onPropertyClick={handlePropertyClick} />
-    </div>
-  </div>
-)}
+        {window.innerWidth > 768 && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '320px'
+          }}>
+            <div style={{ width: '100%', maxWidth: '320px' }}>
+              <HeroGallery properties={properties} onPropertyClick={handlePropertyClick} />
+            </div>
+          </div>
+        )}
 
-        {/* Center Content */}
         <div style={{ textAlign: 'center', alignSelf: 'center' }}>
           <div style={{
             background: 'rgba(255,255,255,0.2)',
@@ -295,7 +361,7 @@ function App() {
             marginBottom: '24px',
             lineHeight: '1.2'
           }}>
-            Seu Imóvel dos Sonhos
+            Seu Imovel dos Sonhos
             <span style={{ display: 'block', color: '#a7f3d0' }}>no Paraguay</span>
           </h1>
 
@@ -305,8 +371,8 @@ function App() {
             marginBottom: '32px',
             lineHeight: '1.6'
           }}>
-            Mais de 15 anos conectando investidores brasileiros às melhores oportunidades
-            imobiliárias no coração da América do Sul.
+            Mais de 15 anos conectando investidores brasileiros as melhores oportunidades
+            imobiliarias no coracao da America do Sul.
           </p>
 
           <div style={{
@@ -317,7 +383,7 @@ function App() {
           }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'white' }}>{properties.length}+</div>
-              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)' }}>Imóveis</div>
+              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)' }}>Imoveis</div>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'white' }}>2000+</div>
@@ -347,25 +413,22 @@ function App() {
           </button>
         </div>
 
-       {/* Right Gallery */}
-{window.innerWidth > 768 && (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center',
-    width: '100%',
-    maxWidth: '320px'  // ADICIONAR
-  }}>
-    <div style={{ width: '100%', maxWidth: '320px' }}>  {/* ADICIONAR WRAPPER */}
-      <PropertyGallery properties={properties} onPropertyClick={handlePropertyClick} />
-    </div>
-  </div>
-)}
-
+        {window.innerWidth > 768 && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '320px'
+          }}>
+            <div style={{ width: '100%', maxWidth: '320px' }}>
+              <PropertyGallery properties={properties} onPropertyClick={handlePropertyClick} />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
 
-  // Enhanced Property Card
   const PropertyCard = ({ property }) => (
     <div
       style={{
@@ -393,7 +456,6 @@ function App() {
       }}
       onClick={() => handlePropertyClick(property)}
     >
-      {/* Property Image */}
       <div style={{
         width: viewMode === 'list' ? '300px' : '100%',
         height: viewMode === 'list' ? '100%' : '200px',
@@ -410,7 +472,6 @@ function App() {
       }}>
         {(!property.images || property.images.length === 0) && '🏠'}
 
-        {/* Favorite Button */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -433,10 +494,9 @@ function App() {
             transition: 'all 0.2s ease'
           }}
         >
-          ❤️
+          ♥
         </button>
 
-        {/* Property Tags */}
         {property.tags && property.tags.length > 0 && (
           <div style={{
             position: 'absolute',
@@ -498,7 +558,7 @@ function App() {
           color: '#374151'
         }}>
           <div><strong>Tipo:</strong> {property.type}</div>
-          <div><strong>Área:</strong> {property.area} {property.areaUnit}</div>
+          <div><strong>Area:</strong> {property.area} {property.areaUnit}</div>
           {property.rooms && <div><strong>Quartos:</strong> {property.rooms}</div>}
           {property.bathrooms && <div><strong>Banheiros:</strong> {property.bathrooms}</div>}
         </div>
@@ -551,7 +611,6 @@ function App() {
     </div>
   );
 
-  // Pagination Component
   const Pagination = () => {
     if (totalPages <= 1) return null;
 
@@ -613,13 +672,12 @@ function App() {
             cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
           }}
         >
-          Próximo
+          Proximo
         </button>
       </div>
     );
   };
 
-  // Contact Modal
   const ContactModal = () => {
     if (!showContactModal) return null;
 
@@ -714,8 +772,8 @@ function App() {
               textAlign: 'center'
             }}>
               <p style={{ margin: 0, color: '#6b7280', fontSize: '14px' }}>
-                📍 Escritório em Assunção, Paraguay<br />
-                🕒 Atendimento: Segunda a Sexta, 8h às 18h
+                📍 Escritorio em Asuncao, Paraguay<br />
+                🕒 Atendimento: Segunda a Sexta, 8h as 18h
               </p>
             </div>
           </div>
@@ -743,7 +801,12 @@ function App() {
             animation: 'spin 1s linear infinite',
             margin: '0 auto 16px'
           }} />
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: '#374151', marginBottom: '8px' }}>
+          <h2 style={{
+            fontSize: '24px',
+            fontWeight: '600',
+            color: '#374151',
+            marginBottom: '8px'
+          }}>
             Carregando Propriedades
           </h2>
           <p style={{ color: '#6b7280' }}>Conectando com o servidor...</p>
@@ -773,7 +836,6 @@ function App() {
         margin: '0 auto',
         padding: '32px 16px'
       }}>
-        {/* Status Section */}
         <section style={{
           background: 'white',
           padding: '25px',
@@ -782,41 +844,65 @@ function App() {
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
           <h2 style={{ color: '#059669', margin: '0 0 15px 0' }}>
-            📊 Status do Sistema
+            Status do Sistema
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
-            <div style={{ padding: '15px', background: '#ecfdf5', borderRadius: '8px' }}>
-              <strong>✅ Frontend React</strong><br />
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '15px'
+          }}>
+            <div style={{
+              padding: '15px',
+              background: '#ecfdf5',
+              borderRadius: '8px'
+            }}>
+              <strong>Frontend React</strong><br />
               <span style={{ color: '#666' }}>Porta {window.location.port || '3003'}</span>
             </div>
-            <div style={{ padding: '15px', background: '#ecfdf5', borderRadius: '8px' }}>
-              <strong>✅ Backend API</strong><br />
-              <span style={{ color: '#666' }}>{isDevelopment ? 'Localhost' : 'Produção'}</span>
+            <div style={{
+              padding: '15px',
+              background: '#ecfdf5',
+              borderRadius: '8px'
+            }}>
+              <strong>Backend API</strong><br />
+              <span style={{ color: '#666' }}>{isDevelopment ? 'Localhost' : 'Producao'}</span>
             </div>
-            <div style={{ padding: '15px', background: '#ecfdf5', borderRadius: '8px' }}>
-              <strong>📊 Status</strong><br />
+            <div style={{
+              padding: '15px',
+              background: '#ecfdf5',
+              borderRadius: '8px'
+            }}>
+              <strong>Status</strong><br />
               <span style={{ color: '#666' }}>{status}</span>
             </div>
-            <div style={{ padding: '15px', background: '#ecfdf5', borderRadius: '8px' }}>
-              <strong>🏡 Propriedades</strong><br />
+            <div style={{
+              padding: '15px',
+              background: '#ecfdf5',
+              borderRadius: '8px'
+            }}>
+              <strong>Propriedades</strong><br />
               <span style={{ color: '#666' }}>{filteredProperties.length} encontradas</span>
             </div>
           </div>
           {error && (
-            <div style={{ color: '#dc2626', marginTop: '15px', padding: '10px', background: '#fef2f2', borderRadius: '8px' }}>
+            <div style={{
+              color: '#dc2626',
+              marginTop: '15px',
+              padding: '10px',
+              background: '#fef2f2',
+              borderRadius: '8px'
+            }}>
               Erro: {error}
             </div>
           )}
         </section>
 
-        {/* Search System */}
         <SearchSystem
           properties={properties}
           onSearchResults={handleSearchResults}
           onFiltersChange={(filters) => console.log('Filtros aplicados:', filters)}
         />
 
-        {/* Properties Section */}
         <section id="imoveis" style={{
           background: 'white',
           padding: '25px',
@@ -832,10 +918,13 @@ function App() {
             gap: '16px'
           }}>
             <h2 style={{ color: '#059669', margin: 0 }}>
-              🏡 Propriedades Terras Paraguay ({filteredProperties.length})
+              Propriedades Terras Paraguay ({filteredProperties.length})
             </h2>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px'
+            }}>
               {favorites.size > 0 && (
                 <span style={{
                   background: '#fef3c7',
@@ -845,12 +934,18 @@ function App() {
                   fontSize: '14px',
                   fontWeight: '500'
                 }}>
-                  ❤️ {favorites.size} favoritos
+                  {favorites.size} favoritos
                 </span>
               )}
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <label style={{ fontSize: '14px', color: '#374151' }}>Ordenar:</label>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <label style={{
+                  fontSize: '14px',
+                  color: '#374151'
+                }}>Ordenar:</label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -861,14 +956,17 @@ function App() {
                     fontSize: '14px'
                   }}
                 >
-                  <option value="price-asc">Menor Preço</option>
-                  <option value="price-desc">Maior Preço</option>
+                  <option value="price-asc">Menor Preco</option>
+                  <option value="price-desc">Maior Preco</option>
                   <option value="newest">Mais Recentes</option>
-                  <option value="area-desc">Maior Área</option>
+                  <option value="area-desc">Maior Area</option>
                 </select>
               </div>
-
-              <div style={{ display: 'flex', border: '1px solid #d1d5db', borderRadius: '6px' }}>
+              <div style={{
+                display: 'flex',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px'
+              }}>
                 <button
                   onClick={() => setViewMode('grid')}
                   style={{
@@ -881,7 +979,7 @@ function App() {
                     fontSize: '12px'
                   }}
                 >
-                  ⊞ Grid
+                  Grid
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
@@ -895,7 +993,7 @@ function App() {
                     fontSize: '12px'
                   }}
                 >
-                  ☰ Lista
+                  Lista
                 </button>
               </div>
             </div>
@@ -908,13 +1006,18 @@ function App() {
               color: '#6b7280'
             }}>
               <div style={{ fontSize: '64px', marginBottom: '16px' }}>🏡</div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '8px', color: '#374151' }}>
-                {properties.length === 0 ? 'Carregando propriedades...' : 'Nenhum imóvel encontrado'}
+              <h3 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                marginBottom: '8px',
+                color: '#374151'
+              }}>
+                {properties.length === 0 ? 'Carregando propriedades...' : 'Nenhum imovel encontrado'}
               </h3>
               <p style={{ fontSize: '16px' }}>
-                {properties.length === 0 ?
-                  'Conectando com o backend para buscar as propriedades disponíveis.' :
-                  'Tente ajustar os filtros ou termos de busca para encontrar imóveis.'
+                {properties.length === 0
+                  ? 'Conectando com o backend para buscar as propriedades disponiveis.'
+                  : 'Tente ajustar os filtros ou termos de busca para encontrar imoveis.'
                 }
               </p>
             </div>
@@ -935,7 +1038,6 @@ function App() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer style={{
         marginTop: '40px',
         padding: '40px 16px',
@@ -950,43 +1052,61 @@ function App() {
             marginBottom: '32px'
           }}>
             <div>
-              <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px' }}>Terras Paraguay</h3>
-              <p style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.6' }}>
-                Especialistas em imóveis no Paraguay há mais de 15 anos.
-                Conectamos investidores brasileiros às melhores oportunidades.
+              <h3 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                marginBottom: '16px'
+              }}>Terras Paraguay</h3>
+              <p style={{
+                color: 'rgba(255,255,255,0.9)',
+                lineHeight: '1.6'
+              }}>
+                Especialistas em imoveis no Paraguay ha mais de 15 anos. Conectamos investidores brasileiros as melhores oportunidades.
               </p>
             </div>
             <div>
-              <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Contato</h4>
-              <div style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.8' }}>
-                <p>📱 WhatsApp: +595 971 123456</p>
-                <p>📧 Email: contato@terrasparaguay.com</p>
-                <p>📍 Assunção, Paraguay</p>
+              <h4 style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                marginBottom: '16px'
+              }}>Contato</h4>
+              <div style={{
+                color: 'rgba(255,255,255,0.9)',
+                lineHeight: '1.8'
+              }}>
+                <p>WhatsApp: +595 971 123456</p>
+                <p>Email: contato@terrasparaguay.com</p>
+                <p>Asuncao, Paraguay</p>
               </div>
             </div>
             <div>
-              <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Informações</h4>
-              <div style={{ color: 'rgba(255,255,255,0.9)', lineHeight: '1.8' }}>
-                <p>🌐 Ambiente: {isDevelopment ? 'Desenvolvimento' : 'Produção'}</p>
-                <p>🔗 API: {API_BASE}</p>
-                <p>⚡ Status: {status}</p>
-                <p>❤️ Favoritos salvos: {favorites.size}</p>
+              <h4 style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                marginBottom: '16px'
+              }}>Informacoes</h4>
+              <div style={{
+                color: 'rgba(255,255,255,0.9)',
+                lineHeight: '1.8'
+              }}>
+                <p>Ambiente: {isDevelopment ? 'Desenvolvimento' : 'Producao'}</p>
+                <p>API: {API_BASE}</p>
+                <p>Status: {status}</p>
+                <p>Favoritos salvos: {favorites.size}</p>
               </div>
             </div>
           </div>
-
           <div style={{
             borderTop: '1px solid rgba(255,255,255,0.2)',
             paddingTop: '20px',
             textAlign: 'center',
             color: 'rgba(255,255,255,0.8)'
           }}>
-            <p>© 2025 Terras Paraguay - Todos os direitos reservados | Plataforma White Label</p>
+            <p>2025 Terras Paraguay - Todos os direitos reservados | Plataforma White Label</p>
           </div>
         </div>
       </footer>
 
-      {/* Property Details Modal */}
       {selectedProperty && (
         <PropertyDetails
           property={selectedProperty}
@@ -994,10 +1114,8 @@ function App() {
         />
       )}
 
-      {/* Contact Modal */}
       <ContactModal />
 
-      {/* WhatsApp Float Button */}
       <div style={{
         position: 'fixed',
         bottom: '24px',
