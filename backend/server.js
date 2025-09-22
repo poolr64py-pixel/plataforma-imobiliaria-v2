@@ -7,8 +7,11 @@ const PORT = 3001;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3003', 'http://localhost:3000'],
-  credentials: true
+  origin: [
+    'http://localhost:3003', 
+    'http://localhost:3000',
+    'http://cliente2.localhost:3003'
+  ]
 }));
 app.use(express.json());
 
