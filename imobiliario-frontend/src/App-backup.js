@@ -574,14 +574,20 @@ const PropertyCard = ({ property, viewMode, favorites, toggleFavorite, navigate,
   );
 };
 
-// COMPONENTE PAGINAÇÃO FUNCIONAL - ÚNICO E LIMPO
+// Componente Paginação CORRIGIDO
+// COMPONENTE PAGINAÇÃO COM DEBUG - SUBSTITUA O EXISTENTE
+
+// PAGINAÇÃO SIMPLES QUE FUNCIONA - SUBSTITUA O COMPONENTE PAGINATION EXISTENTE
+
 const Pagination = ({ currentPage, totalPages, onPageChange, totalItems }) => {
   if (totalPages <= 1) return null;
 
+  // FUNÇÃO INTERNA QUE FORÇA A EXECUÇÃO
   const handleClick = (page) => {
     console.log(`CLIQUE DETECTADO: Mudando para página ${page}`);
     console.log(`Estado atual: currentPage=${currentPage}, totalPages=${totalPages}`);
     
+    // CHAMAR A FUNÇÃO PASSADA COMO PROP
     if (typeof onPageChange === 'function') {
       console.log('Função onPageChange encontrada, executando...');
       onPageChange(page);
@@ -602,6 +608,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, totalItems }) => {
       borderRadius: '10px',
       border: '2px solid #0ea5e9'
     }}>
+      {/* BOTÃO ANTERIOR */}
       <button
         onClick={() => handleClick(currentPage - 1)}
         disabled={currentPage === 1}
@@ -619,6 +626,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, totalItems }) => {
         ← Anterior
       </button>
 
+      {/* NÚMEROS DAS PÁGINAS */}
       {[1, 2, 3, 4, 5].slice(0, totalPages).map(page => (
         <button
           key={page}
@@ -639,6 +647,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, totalItems }) => {
         </button>
       ))}
 
+      {/* BOTÃO PRÓXIMO */}
       <button
         onClick={() => handleClick(currentPage + 1)}
         disabled={currentPage === totalPages}
@@ -656,6 +665,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange, totalItems }) => {
         Próximo →
       </button>
 
+      {/* INFO DA PAGINAÇÃO */}
       <div style={{
         marginLeft: '20px',
         padding: '8px 12px',
@@ -667,10 +677,210 @@ const Pagination = ({ currentPage, totalPages, onPageChange, totalItems }) => {
       }}>
         Página <strong>{currentPage}</strong> de <strong>{totalPages}</strong> | {totalItems} itens
       </div>
+      
+      {/* BOTÕES DE TESTE DIRETO */}
+      <div style={{ marginLeft: '20px', display: 'flex', gap: '5px' }}>
+        <button
+          onClick={() => {
+            console.log('TESTE DIRETO: Indo para página 1');
+            handleClick(1);
+          }}
+          style={{
+            padding: '5px 10px',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '3px',
+            cursor: 'pointer',
+            fontSize: '12px'
+          }}
+        >
+          Testar P1
+        </button>
+        <button
+          onClick={() => {
+            console.log('TESTE DIRETO: Indo para página 2');
+            handleClick(2);
+          }}
+          style={{
+            padding: '5px 10px',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '3px',
+            cursor: 'pointer',
+            fontSize: '12px'
+          }}
+        >
+          Testar P2
+        </button>
+      </div>
     </div>
   );
 };
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      const isCurrentPage = i === currentPage;
+      pages.push(
+        <button
+          key={i}
+          onClick={() => handlePageClick(i)}
+          style={{
+            padding: '8px 12px',
+            margin: '0 2px',
+            border: '1px solid #d1d5db',
+            borderRadius: '6px',
+            background: isCurrentPage ? '#059669' : 'white',
+            color: isCurrentPage ? 'white' : '#374151',
+            cursor: 'pointer',
+            fontWeight: isCurrentPage ? '600' : '400',
+            minWidth: '40px'
+          }}
+        >
+          {i}
+        </button>
+      );
+    }
+    
+    return pages;
+  };
 
+  return (
+    <div>
+      <DebugInfo />
+      
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '8px',
+        marginTop: '32px',
+        padding: '20px',
+        background: '#f9fafb',
+        borderRadius: '8px',
+        border: '2px solid #10b981'
+      }}>
+        <button
+          onClick={() => handlePageClick(currentPage - 1)}
+          disabled={currentPage === 1}
+          style={{
+            padding: '10px 16px',
+            border: '1px solid #d1d5db',
+            borderRadius: '6px',
+            background: currentPage === 1 ? '#f3f4f6' : '#059669',
+            color: currentPage === 1 ? '#9ca3af' : 'white',
+            cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+            fontWeight: '500'
+          }}
+        >
+          ◀ Anterior
+        </button>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px'
+        }}>
+          {renderPageNumbers()}
+        </div>
+
+        <button
+          onClick={() => handlePageClick(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          style={{
+            padding: '10px 16px',
+            border: '1px solid #d1d5db',
+            borderRadius: '6px',
+            background: currentPage === totalPages ? '#f3f4f6' : '#059669',
+            color: currentPage === totalPages ? '#9ca3af' : 'white',
+            cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+            fontWeight: '500'
+          }}
+        >
+          Próximo ▶
+        </button>
+
+        <div style={{
+          marginLeft: '20px',
+          fontSize: '14px',
+          color: '#374151',
+          background: 'white',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          border: '1px solid #d1d5db'
+        }}>
+          Página <strong>{currentPage}</strong> de <strong>{totalPages}</strong> | {totalItems} propriedades
+        </div>
+      </div>
+      
+      {/* TESTE MANUAL DOS BOTÕES */}
+      <div style={{
+        textAlign: 'center',
+        marginTop: '16px',
+        padding: '16px',
+        background: '#eff6ff',
+        borderRadius: '8px',
+        border: '1px solid #3b82f6'
+      }}>
+        <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#1e40af' }}>
+          <strong>TESTE MANUAL:</strong>
+        </p>
+        <button
+          onClick={() => handlePageClick(1)}
+          style={{
+            margin: '4px',
+            padding: '6px 12px',
+            background: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Ir para Página 1
+        </button>
+        <button
+          onClick={() => handlePageClick(2)}
+          style={{
+            margin: '4px',
+            padding: '6px 12px',
+            background: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Ir para Página 2
+        </button>
+        <button
+          onClick={() => console.log('Estado atual:', { currentPage, totalPages, totalItems })}
+          style={{
+            margin: '4px',
+            padding: '6px 12px',
+            background: '#10b981',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Log Estado
+        </button>
+      </div>
+    </div>
+  );
+};
 // Modal de Contato
 const ContactModal = ({ showContactModal, setShowContactModal, handleWhatsAppContact, tenantConfig }) => {
   if (!showContactModal) return null;
@@ -834,49 +1044,50 @@ function App() {
   };
 
   // FUNÇÃO FETCHDATA CORRIGIDA PARA PAGINAÇÃO
-  const fetchData = useCallback(async (page = 1) => {
-    setLoading(true);
-    try {
-      console.log(`🔄 [FETCH] Buscando página ${page} da API...`);
-      console.log('API Base URL:', API_BASE);
+ const fetchData = useCallback(async (page = 1) => {
+  setLoading(true);
+  try {
+    console.log(`🔄 [FETCH] Buscando página ${page} da API...`);
+    console.log('API Base URL:', API_BASE);
 
-      const healthResponse = await fetch(`${API_BASE}/api/health`);
-      const healthData = await healthResponse.json();
-      console.log('✅ Backend conectado:', healthData.status);
-      setStatus('Conectado');
+    const healthResponse = await fetch(`${API_BASE}/api/health`);
+    const healthData = await healthResponse.json();
+    console.log('✅ Backend conectado:', healthData.status);
+    setStatus('Conectado');
 
-      const url = `${API_BASE}/api/properties?page=${page}&limit=${propertiesPerPage}&sortBy=createdAt&sortOrder=desc`;
-      console.log('🌐 URL da requisição:', url);
+    // BUSCAR PROPRIEDADES COM PAGINAÇÃO
+    const url = `${API_BASE}/api/properties?page=${page}&limit=${propertiesPerPage}&sortBy=createdAt&sortOrder=desc`;
+    console.log('🌐 URL da requisição:', url);
+    
+    const propertiesResponse = await fetch(url);
+    const propertiesData = await propertiesResponse.json();
+    console.log(`📦 Dados da página ${page}:`, propertiesData);
+
+    if (propertiesData.success && propertiesData.data) {
+      console.log('=== PAGINAÇÃO ATUALIZADA ===');
+      console.log('Página atual:', propertiesData.pagination?.page);
+      console.log('Total páginas:', propertiesData.pagination?.pages);
+      console.log('Total propriedades:', propertiesData.pagination?.total);
+      console.log('Propriedades nesta página:', propertiesData.data.length);
+      console.log('IDs das propriedades:', propertiesData.data.map(p => p.id));
       
-      const propertiesResponse = await fetch(url);
-      const propertiesData = await propertiesResponse.json();
-      console.log(`📦 Dados da página ${page}:`, propertiesData);
-
-      if (propertiesData.success && propertiesData.data) {
-        console.log('=== PAGINAÇÃO ATUALIZADA ===');
-        console.log('Página atual:', propertiesData.pagination?.page);
-        console.log('Total páginas:', propertiesData.pagination?.pages);
-        console.log('Total propriedades:', propertiesData.pagination?.total);
-        console.log('Propriedades nesta página:', propertiesData.data.length);
-        console.log('IDs das propriedades:', propertiesData.data.map(p => p.id));
-        
-        setProperties(propertiesData.data);
-        setFilteredProperties(propertiesData.data);
-        setCurrentPage(propertiesData.pagination?.page || page);
-        setTotalPages(propertiesData.pagination?.pages || 1);
-        setTotalItems(propertiesData.pagination?.total || propertiesData.data.length);
-      } else {
-        console.error('❌ Resposta inválida da API:', propertiesData);
-      }
-      setError(null);
-    } catch (error) {
-      console.error('❌ Erro ao buscar dados:', error);
-      setStatus('Backend offline');
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      setProperties(propertiesData.data);
+      setFilteredProperties(propertiesData.data);
+      setCurrentPage(propertiesData.pagination?.page || page);
+      setTotalPages(propertiesData.pagination?.pages || 1);
+      setTotalItems(propertiesData.pagination?.total || propertiesData.data.length);
+    } else {
+      console.error('❌ Resposta inválida da API:', propertiesData);
     }
-  }, [API_BASE, propertiesPerPage]);
+    setError(null);
+  } catch (error) {
+    console.error('❌ Erro ao buscar dados:', error);
+    setStatus('Backend offline');
+    setError(error.message);
+  } finally {
+    setLoading(false);
+  }
+}, [API_BASE, propertiesPerPage]);
 
   const updateSEO = (property = null) => {
     if (property) {
@@ -900,7 +1111,7 @@ function App() {
   useEffect(() => {
     if (tenantConfig) {
       updateSEO();
-      fetchData(1);
+      fetchData(1); // Sempre carregar página 1 inicialmente
     }
   }, [tenantConfig]);
 
@@ -936,21 +1147,27 @@ function App() {
     }
   }, []);
 
-  const handlePageChange = (newPage) => {
-    console.log(`🔄 [CHANGE] Mudança solicitada: ${currentPage} → ${newPage}`);
-    console.log(`🔄 [CHANGE] Validação: newPage=${newPage}, currentPage=${currentPage}, totalPages=${totalPages}`);
+ // FUNÇÃO DE MUDANÇA DE PÁGINA CORRIGIDA
+const handlePageChange = (newPage) => {
+  console.log(`🔄 [CHANGE] Mudança solicitada: ${currentPage} → ${newPage}`);
+  console.log(`🔄 [CHANGE] Validação: newPage=${newPage}, currentPage=${currentPage}, totalPages=${totalPages}`);
+  
+  if (newPage !== currentPage && newPage >= 1 && newPage <= totalPages) {
+    console.log('✅ [CHANGE] Mudança válida, chamando fetchData...');
     
-    if (newPage !== currentPage && newPage >= 1 && newPage <= totalPages) {
-      console.log('✅ [CHANGE] Mudança válida, chamando fetchData...');
-      fetchData(newPage);
-      setTimeout(() => {
-        document.getElementById('imoveis')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      console.log('❌ [CHANGE] Mudança rejeitada');
-    }
-  };
+    // Chamar fetchData com a nova página
+    fetchData(newPage);
+    
+    // Scroll suave
+    setTimeout(() => {
+      document.getElementById('imoveis')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  } else {
+    console.log('❌ [CHANGE] Mudança rejeitada');
+  }
+};
 
+  // Componente Header
   const ProfessionalHeader = () => {
     const navigate = useNavigate();
     
@@ -1061,6 +1278,7 @@ function App() {
     );
   };
 
+  // Componente Hero Section
   const HeroSection = () => (
     <section style={{
       background: `linear-gradient(135deg, ${tenantConfig?.primaryColor || '#059669'} 0%, ${tenantConfig?.secondaryColor || '#047857'} 100%)`,
@@ -1133,6 +1351,7 @@ function App() {
     </section>
   );
 
+  // Componente para página de propriedade individual
   const PropertyPage = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -1201,6 +1420,7 @@ function App() {
     );
   };
 
+  // Página principal
   const HomePage = () => {
     const navigate = useNavigate();
     
@@ -1246,11 +1466,11 @@ function App() {
           margin: '0 auto',
           padding: '32px 16px'
         }}>
-         {/*  <SearchSystem
+          <SearchSystem
             properties={properties}
             onSearchResults={handleSearchResults}
             onFiltersChange={(filters) => console.log('Filtros aplicados:', filters)}
-          />*/}
+          />
 
           <section id="imoveis" style={{
             background: 'white',
@@ -1430,6 +1650,7 @@ function App() {
     );
   };
 
+  // Componente Admin Page  
   const AdminPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [adminUser, setAdminUser] = useState(null);
