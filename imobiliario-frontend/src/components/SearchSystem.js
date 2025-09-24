@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,11 +14,13 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
     currency: 'USD'
   });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // Previne múltiplas chamadas com useRef
+  const previousFiltersRef = useRef(null);
 
   const applyFilters = () => {
     let filtered = properties;
 
-    // Filtro por termo de busca
     if (searchTerm.trim()) {
       filtered = filtered.filter(property =>
         property.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -28,54 +30,59 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
       );
     }
 
-    // Filtro por tipo
     if (filters.type) {
       filtered = filtered.filter(property => property.type === filters.type);
     }
 
-    // Filtro por preço mínimo
     if (filters.minPrice) {
       filtered = filtered.filter(property => property.price >= parseInt(filters.minPrice));
     }
 
-    // Filtro por preço máximo
     if (filters.maxPrice) {
       filtered = filtered.filter(property => property.price <= parseInt(filters.maxPrice));
     }
 
-    // Filtro por localização
     if (filters.location) {
       filtered = filtered.filter(property =>
         property.location?.toLowerCase().includes(filters.location.toLowerCase())
       );
     }
 
-    // Filtro por quartos
     if (filters.rooms) {
       filtered = filtered.filter(property => property.rooms >= parseInt(filters.rooms));
     }
 
-    // Filtro por banheiros
     if (filters.bathrooms) {
       filtered = filtered.filter(property => property.bathrooms >= parseInt(filters.bathrooms));
     }
 
-    // Filtro por área mínima
     if (filters.minArea) {
       filtered = filtered.filter(property => property.area >= parseInt(filters.minArea));
     }
 
-    // Filtro por área máxima
     if (filters.maxArea) {
       filtered = filtered.filter(property => property.area <= parseInt(filters.maxArea));
     }
 
-    onSearchResults(filtered);
-    onFiltersChange({ searchTerm, ...filters });
+    return filtered;
   };
 
   useEffect(() => {
-    applyFilters();
+    // Cria string única dos filtros para comparação
+    const currentFiltersString = JSON.stringify({ searchTerm, ...filters });
+    
+    // Só aplica se os filtros mudaram de verdade
+    if (previousFiltersRef.current !== currentFiltersString) {
+      console.log('🔍 [SEARCH] Filtros mudaram, aplicando...');
+      previousFiltersRef.current = currentFiltersString;
+      
+      const filtered = applyFilters();
+      onSearchResults(filtered);
+      
+      if (onFiltersChange) {
+        onFiltersChange({ searchTerm, ...filters });
+      }
+    }
   }, [searchTerm, filters, properties]);
 
   const handleFilterChange = (key, value) => {
@@ -100,8 +107,6 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
     });
   };
 
-
-
   return (
     <div style={{
       background: 'white',
@@ -110,7 +115,6 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
       boxShadow: '0 4px 6px rgba(0,0,0,0.07)',
       marginBottom: '24px'
     }}>
-
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#059669', margin: 0 }}>🔍 Buscar Propriedades</h2>
         <button
@@ -130,7 +134,6 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
         </button>
       </div>
 
-      {/* Campo de busca principal */}
       <div style={{ marginBottom: '16px' }}>
         <input
           type="text"
@@ -148,7 +151,6 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
         />
       </div>
 
-      {/* Filtros básicos */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -205,7 +207,6 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
         </select>
       </div>
 
-      {/* Filtros avançados */}
       {showAdvancedFilters && (
         <div style={{
           background: '#f9fafb',
@@ -347,29 +348,12 @@ const SearchSystem = ({ properties, onSearchResults, onFiltersChange }) => {
         </div>
       )}
 
-      {/* Botões de ação */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
         <div style={{ fontSize: '14px', color: '#6b7280' }}>
           💡 Dica: Use os filtros para encontrar exatamente o que procura
         </div>
 
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            style={{
-              background: '#f3f4f6',
-              color: '#374151',
-              border: '1px solid #d1d5db',
-              padding: '8px 16px',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '500'
-            }}
-          >
-            {showAdvancedFilters ? '🔽 Menos' : '🔼 Mais'}
-          </button>
-
           <button
             onClick={clearFilters}
             style={{
