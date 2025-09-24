@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 
@@ -223,213 +222,6 @@ const mockProperties = [
     views: 134,
     rating: 4.5,
     reviews: 9
-  },
-  {
-    id: 6,
-    title: 'Mega Fazenda em Itapúa - 500 Hectares',
-    price: 1250000,
-    pricePerHectare: 2500,
-    currency: 'USD',
-    location: 'Encarnación, Itapúa - Paraguay',
-    coordinates: { lat: -27.330, lng: -55.865 },
-    area: 500,
-    areaUnit: 'hectares',
-    type: 'farm',
-    purpose: 'sale',
-    features: [
-      'Solo classe I e II',
-      'Rio com 2km de margem',
-      'Infraestrutura completa',
-      'Casa sede luxuosa',
-      'Funcionários fixos',
-      'Maquinário incluso',
-      'Silos próprios',
-      'Energia trifásica',
-      'Escritório administrativo'
-    ],
-    description: 'Mega empreendimento rural com 500 hectares de terra de primeira qualidade. Fazenda estruturada e em plena produção, ideal para grandes investidores do agronegócio.',
-    images: [
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1586436746790-a74dbb5a3bb4?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1574708667725-2df80b7fe1a4?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&h=600&fit=crop'
-    ],
-    tags: ['Mega Fazenda', 'Rio', 'Luxo', 'Produção', 'Silos'],
-    realtor: {
-      name: 'Roberto Salinas',
-      phone: '+595971555000',
-      email: 'roberto@terrasparaguay.com',
-      whatsapp: '+595971555000'
-    },
-    createdAt: '2024-02-05',
-    views: 456,
-    rating: 5.0,
-    reviews: 23
-  },
-  {
-    id: 7,
-    title: 'Chácara de Lazer em Caacupé',
-    price: 75000,
-    pricePerHectare: 15000,
-    currency: 'USD',
-    location: 'Caacupé, Cordillera - Paraguay',
-    coordinates: { lat: -25.388, lng: -57.140 },
-    area: 5,
-    areaUnit: 'hectares',
-    type: 'farm',
-    purpose: 'sale',
-    features: [
-      'Casa de campo rústica',
-      'Piscina natural',
-      'Área de churrasco',
-      'Pomar com frutas nativas',
-      'Trilhas ecológicas',
-      'Vista para montanhas',
-      'Energia solar',
-      'Poço artesiano'
-    ],
-    description: 'Chácara perfeita para lazer e descanso na bela região de Caacupé. Ambiente natural preservado com infraestrutura para momentos em família.',
-    images: [
-      'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop'
-    ],
-    tags: ['Lazer', 'Chácara', 'Piscina', 'Natureza', 'Família'],
-    realtor: {
-      name: 'Lucia Ramirez',
-      phone: '+595983456789',
-      email: 'lucia@terrasparaguay.com',
-      whatsapp: '+595983456789'
-    },
-    createdAt: '2024-02-10',
-    views: 89,
-    rating: 4.4,
-    reviews: 7
-  },
-  {
-    id: 8,
-    title: 'Duplex Luxo em Ciudad del Este',
-    price: 180000,
-    pricePerM2: 1500,
-    currency: 'USD',
-    location: 'Ciudad del Este, Alto Paraná - Paraguay',
-    coordinates: { lat: -25.507, lng: -54.616 },
-    area: 120,
-    areaUnit: 'm²',
-    rooms: 4,
-    bathrooms: 3,
-    parking: 2,
-    type: 'house',
-    purpose: 'sale',
-    features: [
-      'Duplex de luxo',
-      'Acabamentos importados',
-      'Condomínio fechado',
-      'Piscina comunitária',
-      'Academia',
-      'Salão de festas',
-      'Segurança 24h',
-      'Próximo ao centro comercial'
-    ],
-    description: 'Duplex de alto padrão em Ciudad del Este, fronteira com Brasil e Argentina. Perfeito para quem busca conforto e proximidade com centros comerciais.',
-    images: [
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop'
-    ],
-    tags: ['Duplex', 'Luxo', 'Fronteira', 'Condomínio', 'Shopping'],
-    realtor: {
-      name: 'Fernando Lopez',
-      phone: '+595985123456',
-      email: 'fernando@terrasparaguay.com',
-      whatsapp: '+595985123456'
-    },
-    createdAt: '2024-02-12',
-    views: 167,
-    rating: 4.7,
-    reviews: 11
-  },
-  {
-    id: 9,
-    title: 'Lote Urbano em Lambaré',
-    price: 45000,
-    pricePerM2: 450,
-    currency: 'USD',
-    location: 'Lambaré, Central - Paraguay',
-    coordinates: { lat: -25.342, lng: -57.628 },
-    area: 100,
-    areaUnit: 'm²',
-    type: 'land',
-    purpose: 'sale',
-    features: [
-      'Lote plano',
-      'Frente para rua principal',
-      'Documentação em dia',
-      'Água e luz disponível',
-      'Próximo a escolas',
-      'Transporte público',
-      'Área em valorização',
-      'Pronto para construir'
-    ],
-    description: 'Excelente lote urbano em Lambaré para construção de casa própria ou investimento. Localização estratégica com boa infraestrutura.',
-    images: [
-      'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1566403777403-50bbfd3138b9?w=800&h=600&fit=crop'
-    ],
-    tags: ['Lote', 'Urbano', 'Investimento', 'Construção'],
-    realtor: {
-      name: 'Carmen Benitez',
-      phone: '+595987654321',
-      email: 'carmen@terrasparaguay.com',
-      whatsapp: '+595987654321'
-    },
-    createdAt: '2024-02-15',
-    views: 78,
-    rating: 4.3,
-    reviews: 5
-  },
-  {
-    id: 10,
-    title: 'Casa para Aluguel em Villa Elisa',
-    price: 1200,
-    pricePerM2: 10,
-    currency: 'USD',
-    location: 'Villa Elisa, Central - Paraguay',
-    coordinates: { lat: -25.372, lng: -57.590 },
-    area: 120,
-    areaUnit: 'm²',
-    rooms: 3,
-    bathrooms: 2,
-    parking: 1,
-    type: 'house',
-    purpose: 'rent',
-    features: [
-      'Casa completa mobilada',
-      'Jardim amplo',
-      'Área gourmet',
-      'Internet fibra óptica',
-      'Ar condicionado',
-      'Próximo a universidades',
-      'Bairro residencial',
-      'Fácil acesso'
-    ],
-    description: 'Casa completa para aluguel em Villa Elisa. Ideal para famílias ou executivos que buscam conforto em bairro tranquilo e bem localizado.',
-    images: [
-      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop'
-    ],
-    tags: ['Aluguel', 'Mobilada', 'Família', 'Jardim'],
-    realtor: {
-      name: 'Miguel Santos',
-      phone: '+595989876543',
-      email: 'miguel@terrasparaguay.com',
-      whatsapp: '+595989876543'
-    },
-    createdAt: '2024-02-18',
-    views: 45,
-    rating: 4.2,
-    reviews: 3
   }
 ];
 
@@ -455,292 +247,6 @@ const tenantConfigs = {
     language: 'pt'
   }
 };
-
-// Rotas da API
-
-// Rota principal - Interface Web do Backend
-app.get('/', (req, res) => {
-  const stats = {
-    totalProperties: mockProperties.length,
-    propertiesByType: {
-      farm: mockProperties.filter(p => p.type === 'farm').length,
-      ranch: mockProperties.filter(p => p.type === 'ranch').length,
-      land: mockProperties.filter(p => p.type === 'land').length,
-      house: mockProperties.filter(p => p.type === 'house').length,
-      apartment: mockProperties.filter(p => p.type === 'apartment').length
-    },
-    totalViews: mockProperties.reduce((sum, p) => sum + p.views, 0),
-    averagePrice: Math.round(mockProperties.reduce((sum, p) => sum + p.price, 0) / mockProperties.length)
-  };
-
-  const html = `
-    <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Terras Paraguay API - Painel Administrativo</title>
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                min-height: 100vh;
-                padding: 20px;
-            }
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-            .header {
-                background: linear-gradient(135deg, #059669 0%, #047857 100%);
-                color: white;
-                padding: 30px;
-                border-radius: 15px;
-                text-align: center;
-                margin-bottom: 30px;
-                box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
-            }
-            .header h1 {
-                font-size: 2.5em;
-                margin-bottom: 10px;
-            }
-            .header p {
-                font-size: 1.2em;
-                opacity: 0.9;
-            }
-            .status-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-                margin-bottom: 30px;
-            }
-            .status-card {
-                background: white;
-                padding: 25px;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                text-align: center;
-                transition: transform 0.3s ease;
-            }
-            .status-card:hover {
-                transform: translateY(-5px);
-            }
-            .status-card .icon {
-                font-size: 3em;
-                margin-bottom: 15px;
-            }
-            .status-card .number {
-                font-size: 2.5em;
-                font-weight: bold;
-                color: #059669;
-                margin-bottom: 10px;
-            }
-            .status-card .label {
-                color: #666;
-                font-size: 1.1em;
-            }
-            .endpoints-section {
-                background: white;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                margin-bottom: 30px;
-            }
-            .endpoints-section h2 {
-                color: #059669;
-                margin-bottom: 20px;
-                font-size: 1.8em;
-            }
-            .endpoint {
-                display: flex;
-                align-items: center;
-                padding: 15px;
-                margin-bottom: 10px;
-                background: #f8f9fa;
-                border-radius: 8px;
-                border-left: 4px solid #059669;
-            }
-            .endpoint .method {
-                background: #059669;
-                color: white;
-                padding: 5px 12px;
-                border-radius: 20px;
-                font-weight: bold;
-                margin-right: 15px;
-                font-size: 0.9em;
-            }
-            .endpoint .url {
-                font-family: 'Courier New', monospace;
-                font-weight: bold;
-                flex: 1;
-            }
-            .endpoint .description {
-                color: #666;
-                font-style: italic;
-            }
-            .properties-preview {
-                background: white;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            }
-            .properties-preview h2 {
-                color: #059669;
-                margin-bottom: 20px;
-                font-size: 1.8em;
-            }
-            .property-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 15px;
-                margin-bottom: 10px;
-                background: #f8f9fa;
-                border-radius: 8px;
-                border-left: 4px solid #fbbf24;
-            }
-            .property-title {
-                font-weight: bold;
-                color: #2c3e50;
-            }
-            .property-price {
-                color: #059669;
-                font-weight: bold;
-                font-size: 1.1em;
-            }
-            .footer {
-                text-align: center;
-                margin-top: 40px;
-                padding: 20px;
-                color: #666;
-            }
-            .test-buttons {
-                display: flex;
-                gap: 10px;
-                justify-content: center;
-                margin-top: 20px;
-                flex-wrap: wrap;
-            }
-            .test-btn {
-                background: #059669;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                text-decoration: none;
-                font-weight: bold;
-                transition: background 0.3s;
-            }
-            .test-btn:hover {
-                background: #047857;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <header class="header">
-                <h1>🌱 Terras Paraguay API</h1>
-                <p>Painel Administrativo - Backend API</p>
-                <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; margin-top: 15px;">
-                    <strong>Status:</strong> ✅ Online | <strong>Porta:</strong> ${PORT} | <strong>Versão:</strong> 1.0.0
-                </div>
-            </header>
-
-            <div class="status-grid">
-                <div class="status-card">
-                    <div class="icon">🏡</div>
-                    <div class="number">${stats.totalProperties}</div>
-                    <div class="label">Total de Propriedades</div>
-                </div>
-                <div class="status-card">
-                    <div class="icon">👀</div>
-                    <div class="number">${stats.totalViews.toLocaleString()}</div>
-                    <div class="label">Total de Visualizações</div>
-                </div>
-                <div class="status-card">
-                    <div class="icon">💰</div>
-                    <div class="number">$${stats.averagePrice.toLocaleString()}</div>
-                    <div class="label">Preço Médio (USD)</div>
-                </div>
-                <div class="status-card">
-                    <div class="icon">📊</div>
-                    <div class="number">${Object.values(stats.propertiesByType).reduce((a,b) => a+b, 0)}</div>
-                    <div class="label">Tipos Diferentes</div>
-                </div>
-            </div>
-
-            <section class="endpoints-section">
-                <h2>📡 Endpoints da API</h2>
-                <div class="endpoint">
-                    <span class="method">GET</span>
-                    <span class="url">/api/health</span>
-                    <span class="description">Verificação de saúde da API</span>
-                </div>
-                <div class="endpoint">
-                    <span class="method">GET</span>
-                    <span class="url">/api/properties</span>
-                    <span class="description">Lista todas as propriedades (com filtros)</span>
-                </div>
-                <div class="endpoint">
-                    <span class="method">GET</span>
-                    <span class="url">/api/properties/:id</span>
-                    <span class="description">Detalhes de uma propriedade específica</span>
-                </div>
-                <div class="endpoint">
-                    <span class="method">GET</span>
-                    <span class="url">/api/search?q=termo</span>
-                    <span class="description">Busca propriedades por termo</span>
-                </div>
-                <div class="endpoint">
-                    <span class="method">GET</span>
-                    <span class="url">/api/stats</span>
-                    <span class="description">Estatísticas gerais do sistema</span>
-                </div>
-                <div class="endpoint">
-                    <span class="method">GET</span>
-                    <span class="url">/api/tenants</span>
-                    <span class="description">Configurações dos tenants</span>
-                </div>
-
-                <div class="test-buttons">
-                    <a href="/api/properties" class="test-btn" target="_blank">Ver Propriedades JSON</a>
-                    <a href="/api/stats" class="test-btn" target="_blank">Ver Estatísticas</a>
-                    <a href="/api/search?q=fazenda" class="test-btn" target="_blank">Buscar "fazenda"</a>
-                    <a href="http://localhost:3003" class="test-btn" target="_blank">🌐 Ver Frontend</a>
-                </div>
-            </section>
-
-            <section class="properties-preview">
-                <h2>🏡 Propriedades Cadastradas</h2>
-                ${mockProperties.map(property => `
-                    <div class="property-item">
-                        <div>
-                            <div class="property-title">${property.title}</div>
-                            <div style="color: #666; font-size: 0.9em;">📍 ${property.location}</div>
-                        </div>
-                        <div class="property-price">${property.currency} ${property.price.toLocaleString()}</div>
-                    </div>
-                `).join('')}
-            </section>
-
-            <footer class="footer">
-                <p>© 2025 Terras Paraguay - API Backend</p>
-                <p>🔧 Desenvolvido para gestão de propriedades imobiliárias</p>
-            </footer>
-        </div>
-
-        <script>
-            console.log('🌱 Terras Paraguay API Dashboard carregado!');
-            console.log('📊 Estatísticas:', ${JSON.stringify(stats)});
-        </script>
-    </body>
-    </html>
-  `;
-
-  res.send(html);
-});
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -983,9 +489,116 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
-// Sitemap Routes
-const sitemapRoutes = require('./routes/sitemap');
-app.use('/api', sitemapRoutes);
+// ROTAS DE ADMIN - Autenticação
+app.post('/api/admin/login', (req, res) => {
+  console.log('Tentativa de login:', req.body);
+  const { email, password } = req.body;
+  
+  const validCredentials = [
+    { email: 'admin@terrasparaguay.com', password: 'admin123', tenant: 'terras-paraguay' },
+    { email: 'admin@cliente2.com', password: 'cliente123', tenant: 'cliente2' }
+  ];
+  
+  const user = validCredentials.find(u => u.email === email && u.password === password);
+  
+  if (user) {
+    res.json({
+      success: true,
+      token: `${user.tenant}-token-${Date.now()}`,
+      user: { 
+        id: 1, 
+        email: user.email, 
+        name: `Admin ${user.tenant}`,
+        tenant: user.tenant 
+      }
+    });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: 'Email ou senha incorretos'
+    });
+  }
+});
+
+// ROTA DE DEBUG
+app.get('/api/debug/routes', (req, res) => {
+  const routesInfo = {
+    availableRoutes: [
+      'GET /api/health',
+      'GET /api/properties',
+      'GET /api/properties/:id',
+      'GET /api/search',
+      'GET /api/tenants',
+      'GET /api/tenants/:id',
+      'GET /api/stats',
+      'POST /api/admin/login',
+      'GET /api/debug/routes'
+    ],
+    corsConfig: {
+      allowedOrigins: [
+        'http://localhost:3003',
+        'http://localhost:3000',
+        'http://cliente2.localhost:3003'
+      ]
+    }
+  };
+  
+  res.json({
+    success: true,
+    data: routesInfo
+  });
+});
+
+// Rota principal com dashboard
+app.get('/', (req, res) => {
+  const stats = {
+    totalProperties: mockProperties.length,
+    totalViews: mockProperties.reduce((sum, p) => sum + p.views, 0),
+    averagePrice: Math.round(mockProperties.reduce((sum, p) => sum + p.price, 0) / mockProperties.length)
+  };
+
+  res.send(`
+    <html>
+      <head>
+        <title>Terras Paraguay API</title>
+        <style>
+          body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+          .header { background: #059669; color: white; padding: 20px; border-radius: 10px; text-align: center; }
+          .stats { display: flex; gap: 20px; margin: 20px 0; }
+          .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; flex: 1; }
+          .links { margin: 20px 0; }
+          .link { display: inline-block; background: #059669; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; margin: 5px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Terras Paraguay API</h1>
+          <p>Backend funcionando na porta ${PORT}</p>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <h3>${stats.totalProperties}</h3>
+            <p>Propriedades</p>
+          </div>
+          <div class="stat">
+            <h3>${stats.totalViews}</h3>
+            <p>Total Views</p>
+          </div>
+          <div class="stat">
+            <h3>$${stats.averagePrice.toLocaleString()}</h3>
+            <p>Preço Médio</p>
+          </div>
+        </div>
+        <div class="links">
+          <a href="/api/properties" class="link">Ver Propriedades JSON</a>
+          <a href="/api/stats" class="link">Ver Estatísticas</a>
+          <a href="/api/debug/routes" class="link">Debug Rotas</a>
+          <a href="http://localhost:3003" class="link">Ver Frontend</a>
+        </div>
+      </body>
+    </html>
+  `);
+});
 
 // Middleware de erro
 app.use((err, req, res, next) => {
