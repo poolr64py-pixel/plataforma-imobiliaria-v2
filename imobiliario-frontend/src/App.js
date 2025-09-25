@@ -251,7 +251,7 @@ function App() {
   const [showContactModal, setShowContactModal] = useState(false);
   const [adminUser, setAdminUser] = useState(null);
   const propertiesPerPage = 3;
-  const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : process.env.REACT_APP_API_URL;
+  const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '/api';
 
   useEffect(() => {
     const hostname = window.location.hostname;
