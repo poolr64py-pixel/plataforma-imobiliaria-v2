@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo à {{tenant_name}}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+    
+    <!-- Container Principal -->
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f3f4f6;">
+        <tr>
+            <td style="padding: 40px 20px;">
+                
+                <!-- Email Content -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Header com Logo -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, {{primary_color}} 0%, {{secondary_color}} 100%); padding: 40px 30px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700;">
+                                {{tenant_name}}
+                            </h1>
+                            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 16px;">
+                                Seu imóvel dos sonhos está aqui
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Corpo do Email -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            
+                            <h2 style="margin: 0 0 20px 0; color: #1f2937; font-size: 24px; font-weight: 600;">
+                                Olá, {{user_name}}! 👋
+                            </h2>
+                            
+                            <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                                Seja muito bem-vindo à nossa plataforma! Estamos muito felizes em tê-lo conosco nessa jornada para encontrar o imóvel perfeito.
+                            </p>
+                            
+                            <p style="margin: 0 0 30px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                                Aqui estão algumas coisas que você pode fazer agora:
+                            </p>
+                            
+                            <!-- Features List -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 30px;">
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px; margin-bottom: 10px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td width="40" style="vertical-align: top;">
+                                                    <div style="width: 32px; height: 32px; background-color: {{primary_color}}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
+                                                        🏠
+                                                    </div>
+                                                </td>
+                                                <td style="padding-left: 15px; vertical-align: top;">
+                                                    <h3 style="margin: 0 0 5px 0; color: #1f2937; font-size: 16px; font-weight: 600;">
+                                                        Explore Propriedades
+                                                    </h3>
+                                                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                                                        Navegue por centenas de imóveis em todo o Paraguay
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td style="height: 10px;"></td></tr>
+                                
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td width="40" style="vertical-align: top;">
+                                                    <div style="width: 32px; height: 32px; background-color: {{primary_color}}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
+                                                        🔔
+                                                    </div>
+                                                </td>
+                                                <td style="padding-left: 15px; vertical-align: top;">
+                                                    <h3 style="margin: 0 0 5px 0; color: #1f2937; font-size: 16px; font-weight: 600;">
+                                                        Receba Alertas
+                                                    </h3>
+                                                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                                                        Configure alertas e seja notificado sobre novos imóveis
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                
+                                <tr><td style="height: 10px;"></td></tr>
+                                
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9fafb; border-radius: 8px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td width="40" style="vertical-align: top;">
+                                                    <div style="width: 32px; height: 32px; background-color: {{primary_color}}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">
+                                                        💬
+                                                    </div>
+                                                </td>
+                                                <td style="padding-left: 15px; vertical-align: top;">
+                                                    <h3 style="margin: 0 0 5px 0; color: #1f2937; font-size: 16px; font-weight: 600;">
+                                                        Fale com Especialistas
+                                                    </h3>
+                                                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                                                        Nossa equipe está pronta para ajudar via WhatsApp
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- CTA Button -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="text-align: center; padding: 20px 0;">
+                                        <a href="{{website_url}}" style="display: inline-block; background-color: {{primary_color}}; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600;">
+                                            Ver Propriedades Agora
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Dica Especial -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 30px;">
+                                <tr>
+                                    <td style="padding: 20px; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 8px;">
+                                        <p style="margin: 0; color: #92400e; font-size: 14px; line-height: 1.6;">
+                                            <strong>💡 Dica:</strong> Salve seus imóveis favoritos para compará-los depois e receber notificações de mudanças de preço!
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 30px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
+                            
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="text-align: center; padding-bottom: 20px;">
+                                        <p style="margin: 0 0 15px 0; color: #6b7280; font-size: 14px; font-weight: 600;">
+                                            Entre em Contato
+                                        </p>
+                                        
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+                                            <tr>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="https://wa.me/{{whatsapp_number}}" style="color: {{primary_color}}; text-decoration: none; font-size: 14px;">
+                                                        📱 WhatsApp
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="mailto:{{contact_email}}" style="color: {{primary_color}}; text-decoration: none; font-size: 14px;">
+                                                        ✉️ Email
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="tel:{{contact_phone}}" style="color: {{primary_color}}; text-decoration: none; font-size: 14px;">
+                                                        📞 Telefone
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="text-align: center; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                                        <p style="margin: 0 0 10px 0; color: #9ca3af; font-size: 12px;">
+                                            © 2025 {{tenant_name}}. Todos os direitos reservados.
+                                        </p>
+                                        <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                                            {{tenant_address}}
+                                        </p>
+                                        <p style="margin: 10px 0 0 0; color: #9ca3af; font-size: 11px;">
+                                            <a href="{{unsubscribe_url}}" style="color: #9ca3af; text-decoration: underline;">
+                                                Cancelar inscrição
+                                            </a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>

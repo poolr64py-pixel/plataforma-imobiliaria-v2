@@ -4,7 +4,8 @@ import PropertyDetails from './PropertyDetailsAdvanced';
 import SearchSystem from './components/SearchSystem';
 import tenantConfigurations from './config/tenantConfig';
 import AdminLogin from './components/admin/AdminLogin';
-
+import AdminDashboard from './components/admin/AdminDashboard';
+import PropertySEO from './components/PropertySEO';
 // ========== UTILITY FUNCTIONS ==========
 const generateSlug = (title, id) => {
   if (!title) return `propriedade-${id}`;
@@ -248,7 +249,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [tenantConfig, setTenantConfig] = useState(null);
   const [showContactModal, setShowContactModal] = useState(false);
-  
+  const [adminUser, setAdminUser] = useState(null);
   const propertiesPerPage = 3;
   const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001' : process.env.REACT_APP_API_URL;
 
@@ -296,6 +297,14 @@ function App() {
     if (saved) setFavorites(new Set(JSON.parse(saved)));
   }, [tenantConfig, fetchData]);
 
+useEffect(() => {
+  const token = localStorage.getItem('adminToken');
+  const user = localStorage.getItem('adminUser');
+  if (token && user) {
+    setAdminUser(JSON.parse(user));
+  }
+}, []);
+  
   const toggleFavorite = (id) => {
     const newFavorites = new Set(favorites);
     newFavorites.has(id) ? newFavorites.delete(id) : newFavorites.add(id);
@@ -411,6 +420,23 @@ function App() {
     );
   };
 
+   const handleAdminLogin = (user) => {
+  setAdminUser(user);
+};
+
+const handleAdminLogout = () => {
+  localStorage.removeItem('adminToken');
+  localStorage.removeItem('adminUser');
+  setAdminUser(null);
+};
+
+const AdminPage = () => {
+  if (!adminUser) {
+    return <AdminLogin onLogin={handleAdminLogin} />;
+  }
+  return <AdminDashboard user={adminUser} onLogout={handleAdminLogout} />;
+};
+
   return (
     <Router>
       <div style={{ fontFamily: 'system-ui, -apple-system, sans-serif', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
@@ -424,7 +450,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/propriedade/:slug" element={<PropertyPage />} />
-          <Route path="/admin" element={<AdminLogin onLoginSuccess={(user) => console.log('Login:', user)} />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>
     </Router>

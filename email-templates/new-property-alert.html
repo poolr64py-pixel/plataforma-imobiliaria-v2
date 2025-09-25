@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Imóvel Disponível - {{tenant_name}}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f3f4f6;">
+    
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f3f4f6;">
+        <tr>
+            <td style="padding: 20px;">
+                
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, {{primary_color}} 0%, {{secondary_color}} 100%); padding: 30px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700;">
+                                Encontramos o imóvel perfeito!
+                            </h1>
+                            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">
+                                Novo em {{property_location}}
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Property Image -->
+                    <tr>
+                        <td style="padding: 0;">
+                            <img src="{{property_image}}" alt="{{property_title}}" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+                        </td>
+                    </tr>
+                    
+                    <!-- Property Info -->
+                    <tr>
+                        <td style="padding: 30px;">
+                            
+                            <!-- Badge Novo -->
+                            <div style="display: inline-block; background-color: #10b981; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 15px;">
+                                NOVO
+                            </div>
+                            
+                            <h2 style="margin: 0 0 15px 0; color: #1f2937; font-size: 22px; font-weight: 700;">
+                                {{property_title}}
+                            </h2>
+                            
+                            <!-- Price -->
+                            <div style="margin-bottom: 20px;">
+                                <span style="font-size: 32px; font-weight: 700; color: {{primary_color}};">
+                                    {{property_price}}
+                                </span>
+                                <span style="font-size: 14px; color: #6b7280; margin-left: 8px;">
+                                    (~{{price_per_sqm}}/m²)
+                                </span>
+                            </div>
+                            
+                            <!-- Location -->
+                            <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 16px;">
+                                📍 {{property_location}}
+                            </p>
+                            
+                            <!-- Features -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 12px; background-color: #f9fafb; border-radius: 8px; text-align: center; width: 25%;">
+                                        <div style="font-size: 20px; margin-bottom: 5px;">📐</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #1f2937;">{{area}}</div>
+                                        <div style="font-size: 12px; color: #6b7280;">{{area_unit}}</div>
+                                    </td>
+                                    <td style="width: 10px;"></td>
+                                    <td style="padding: 12px; background-color: #f9fafb; border-radius: 8px; text-align: center; width: 25%;">
+                                        <div style="font-size: 20px; margin-bottom: 5px;">🛏️</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #1f2937;">{{bedrooms}}</div>
+                                        <div style="font-size: 12px; color: #6b7280;">quartos</div>
+                                    </td>
+                                    <td style="width: 10px;"></td>
+                                    <td style="padding: 12px; background-color: #f9fafb; border-radius: 8px; text-align: center; width: 25%;">
+                                        <div style="font-size: 20px; margin-bottom: 5px;">🚿</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #1f2937;">{{bathrooms}}</div>
+                                        <div style="font-size: 12px; color: #6b7280;">banheiros</div>
+                                    </td>
+                                    <td style="width: 10px;"></td>
+                                    <td style="padding: 12px; background-color: #f9fafb; border-radius: 8px; text-align: center; width: 25%;">
+                                        <div style="font-size: 20px; margin-bottom: 5px;">🚗</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #1f2937;">{{parking}}</div>
+                                        <div style="font-size: 12px; color: #6b7280;">vagas</div>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Description -->
+                            <p style="margin: 0 0 25px 0; color: #4b5563; font-size: 15px; line-height: 1.6;">
+                                {{property_description}}
+                            </p>
+                            
+                            <!-- Match Score -->
+                            <div style="padding: 20px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 8px; margin-bottom: 25px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <div>
+                                        <div style="font-size: 14px; color: #92400e; font-weight: 600; margin-bottom: 5px;">
+                                            🎯 Match Score
+                                        </div>
+                                        <div style="font-size: 12px; color: #b45309;">
+                                            Este imóvel corresponde {{match_percentage}}% às suas preferências
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 32px; font-weight: 700; color: #f59e0b;">
+                                        {{match_percentage}}%
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA Buttons -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-right: 5px;">
+                                        <a href="{{property_url}}" style="display: block; background-color: {{primary_color}}; color: #ffffff; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center;">
+                                            Ver Detalhes Completos
+                                        </a>
+                                    </td>
+                                    <td style="padding-left: 5px;">
+                                        <a href="{{whatsapp_url}}" style="display: block; background-color: #10b981; color: #ffffff; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center;">
+                                            Falar no WhatsApp
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Similar Properties -->
+                    <tr>
+                        <td style="padding: 30px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
+                            <h3 style="margin: 0 0 20px 0; color: #1f2937; font-size: 18px; font-weight: 600;">
+                                Outras opções em {{property_location}}
+                            </h3>
+                            
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <!-- Similar Property 1 -->
+                                    <td style="width: 48%; padding: 15px; background-color: #ffffff; border-radius: 8px;">
+                                        <img src="{{similar_1_image}}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px; margin-bottom: 10px;">
+                                        <div style="font-size: 14px; font-weight: 600; color: #1f2937; margin-bottom: 5px;">
+                                            {{similar_1_title}}
+                                        </div>
+                                        <div style="font-size: 16px; font-weight: 700; color: {{primary_color}};">
+                                            {{similar_1_price}}
+                                        </div>
+                                    </td>
+                                    
+                                    <td style="width: 4%;"></td>
+                                    
+                                    <!-- Similar Property 2 -->
+                                    <td style="width: 48%; padding: 15px; background-color: #ffffff; border-radius: 8px;">
+                                        <img src="{{similar_2_image}}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px; margin-bottom: 10px;">
+                                        <div style="font-size: 14px; font-weight: 600; color: #1f2937; margin-bottom: 5px;">
+                                            {{similar_2_title}}
+                                        </div>
+                                        <div style="font-size: 16px; font-weight: 700; color: {{primary_color}};">
+                                            {{similar_2_price}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <div style="text-align: center; margin-top: 20px;">
+                                <a href="{{all_properties_url}}" style="color: {{primary_color}}; text-decoration: none; font-size: 14px; font-weight: 600;">
+                                    Ver todos os imóveis em {{property_location}} →
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 25px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center;">
+                            <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 13px;">
+                                Você recebeu este email porque configurou alertas para imóveis em {{property_location}}
+                            </p>
+                            <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                                <a href="{{manage_alerts_url}}" style="color: {{primary_color}}; text-decoration: none;">Gerenciar alertas</a> | 
+                                <a href="{{unsubscribe_url}}" style="color: #9ca3af; text-decoration: none;">Cancelar inscrição</a>
+                            </p>
+                            <p style="margin: 15px 0 0 0; color: #9ca3af; font-size: 11px;">
+                                © 2025 {{tenant_name}}. Todos os direitos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>

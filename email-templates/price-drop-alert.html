@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preço Reduzido - {{tenant_name}}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f3f4f6;">
+    
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f3f4f6;">
+        <tr>
+            <td style="padding: 20px;">
+                
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 2px solid #ef4444;">
+                    
+                    <!-- Header com Urgência -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 30px; text-align: center; position: relative;">
+                            <div style="background-color: rgba(255,255,255,0.2); display: inline-block; padding: 8px 16px; border-radius: 20px; margin-bottom: 15px;">
+                                <span style="color: #ffffff; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                    Alerta de Oportunidade
+                                </span>
+                            </div>
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700;">
+                                Preço Baixou!
+                            </h1>
+                            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.95); font-size: 16px;">
+                                Economia de {{savings_amount}} no imóvel que você favoritou
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Savings Highlight -->
+                    <tr>
+                        <td style="padding: 0;">
+                            <div style="background: linear-gradient(90deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%); padding: 20px; text-align: center;">
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+                                    <tr>
+                                        <td style="text-align: center;">
+                                            <div style="font-size: 14px; color: #92400e; font-weight: 600; margin-bottom: 5px;">
+                                                PREÇO ANTERIOR
+                                            </div>
+                                            <div style="font-size: 24px; color: #b45309; text-decoration: line-through;">
+                                                {{old_price}}
+                                            </div>
+                                        </td>
+                                        <td style="padding: 0 30px;">
+                                            <div style="font-size: 36px; color: #059669;">→</div>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <div style="font-size: 14px; color: #065f46; font-weight: 600; margin-bottom: 5px;">
+                                                NOVO PREÇO
+                                            </div>
+                                            <div style="font-size: 32px; color: #059669; font-weight: 700;">
+                                                {{new_price}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div style="margin-top: 15px; padding: 10px 20px; background-color: #059669; color: white; display: inline-block; border-radius: 20px; font-weight: 700; font-size: 16px;">
+                                    ECONOMIZE {{savings_amount}} ({{discount_percentage}}% OFF)
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Property Image -->
+                    <tr>
+                        <td style="padding: 0;">
+                            <img src="{{property_image}}" alt="{{property_title}}" style="width: 100%; height: 280px; object-fit: cover; display: block;">
+                        </td>
+                    </tr>
+                    
+                    <!-- Property Details -->
+                    <tr>
+                        <td style="padding: 30px;">
+                            
+                            <h2 style="margin: 0 0 15px 0; color: #1f2937; font-size: 22px; font-weight: 700;">
+                                {{property_title}}
+                            </h2>
+                            
+                            <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 16px;">
+                                📍 {{property_location}}
+                            </p>
+                            
+                            <!-- Quick Stats -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td style="padding: 10px; text-align: center; background-color: #f0fdf4; border-radius: 8px; width: 25%;">
+                                        <div style="font-size: 18px; margin-bottom: 5px;">📐</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: #065f46;">{{area}}</div>
+                                        <div style="font-size: 11px; color: #059669;">{{area_unit}}</div>
+                                    </td>
+                                    <td style="width: 3%;"></td>
+                                    <td style="padding: 10px; text-align: center; background-color: #f0fdf4; border-radius: 8px; width: 25%;">
+                                        <div style="font-size: 18px; margin-bottom: 5px;">🛏️</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: #065f46;">{{bedrooms}}</div>
+                                        <div style="font-size: 11px; color: #059669;">quartos</div>
+                                    </td>
+                                    <td style="width: 3%;"></td>
+                                    <td style="padding: 10px; text-align: center; background-color: #f0fdf4; border-radius: 8px; width: 25%;">
+                                        <div style="font-size: 18px; margin-bottom: 5px;">🚿</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: #065f46;">{{bathrooms}}</div>
+                                        <div style="font-size: 11px; color: #059669;">banheiros</div>
+                                    </td>
+                                    <td style="width: 3%;"></td>
+                                    <td style="padding: 10px; text-align: center; background-color: #f0fdf4; border-radius: 8px; width: 25%;">
+                                        <div style="font-size: 18px; margin-bottom: 5px;">🚗</div>
+                                        <div style="font-size: 15px; font-weight: 600; color: #065f46;">{{parking}}</div>
+                                        <div style="font-size: 11px; color: #059669;">vagas</div>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Urgency Box -->
+                            <div style="padding: 20px; background-color: #fef2f2; border-left: 4px solid #ef4444; border-radius: 8px; margin-bottom: 25px;">
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td style="vertical-align: top; width: 40px;">
+                                            <div style="font-size: 28px;">⏰</div>
+                                        </td>
+                                        <td style="padding-left: 15px; vertical-align: top;">
+                                            <div style="font-size: 15px; font-weight: 700; color: #991b1b; margin-bottom: 5px;">
+                                                Oportunidade Limitada
+                                            </div>
+                                            <div style="font-size: 14px; color: #b91c1c; line-height: 1.5;">
+                                                Preços reduzidos não duram muito tempo. {{interested_count}} pessoas visualizaram este imóvel nas últimas 24 horas.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <!-- Description -->
+                            <p style="margin: 0 0 25px 0; color: #4b5563; font-size: 15px; line-height: 1.6;">
+                                {{property_description}}
+                            </p>
+                            
+                            <!-- CTAs -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td style="padding-bottom: 10px;" colspan="2">
+                                        <a href="{{property_url}}" style="display: block; background-color: #ef4444; color: #ffffff; text-decoration: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 700; text-align: center;">
+                                            VER IMÓVEL AGORA - ECONOMIZE {{savings_amount}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-right: 5px;">
+                                        <a href="{{whatsapp_url}}" style="display: block; background-color: #10b981; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center;">
+                                            WhatsApp
+                                        </a>
+                                    </td>
+                                    <td style="padding-left: 5px;">
+                                        <a href="{{schedule_visit_url}}" style="display: block; background-color: #3b82f6; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center;">
+                                            Agendar Visita
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                    
+                    <!-- Social Proof -->
+                    <tr>
+                        <td style="padding: 25px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
+                            <div style="text-align: center; margin-bottom: 20px;">
+                                <div style="font-size: 13px; color: #6b7280; margin-bottom: 10px;">
+                                    Atividade recente neste imóvel:
+                                </div>
+                                <div style="display: inline-block; padding: 8px 16px; background-color: #ffffff; border-radius: 20px; margin: 0 5px;">
+                                    <span style="font-size: 14px; color: #1f2937;">👁️ {{views_count}} visualizações</span>
+                                </div>
+                                <div style="display: inline-block; padding: 8px 16px; background-color: #ffffff; border-radius: 20px; margin: 0 5px;">
+                                    <span style="font-size: 14px; color: #1f2937;">❤️ {{favorites_count}} favoritos</span>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; padding: 15px; background-color: #e0f2fe; border-radius: 8px;">
+                                <div style="font-size: 13px; color: #075985; margin-bottom: 5px;">
+                                    💡 Dica do Especialista
+                                </div>
+                                <div style="font-size: 14px; color: #0c4a6e; line-height: 1.5;">
+                                    Imóveis com redução de preço costumam receber 3x mais propostas. Não perca esta oportunidade!
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 25px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center;">
+                            <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 13px;">
+                                Você recebeu este email porque {{property_title}} está nos seus favoritos
+                            </p>
+                            <p style="margin: 0; color: #9ca3af; font-size: 12px;">
+                                <a href="{{manage_favorites_url}}" style="color: #059669; text-decoration: none;">Gerenciar favoritos</a> | 
+                                <a href="{{unsubscribe_url}}" style="color: #9ca3af; text-decoration: none;">Cancelar alertas</a>
+                            </p>
+                            <p style="margin: 15px 0 0 0; color: #9ca3af; font-size: 11px;">
+                                © 2025 {{tenant_name}}. Todos os direitos reservados.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+    
+</body>
+</html>

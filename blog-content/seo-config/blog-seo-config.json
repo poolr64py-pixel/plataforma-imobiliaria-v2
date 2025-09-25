@@ -1,0 +1,28 @@
+{
+  "site_name": "Terras Paraguay Blog",
+  "base_url": "https://terrasnoparaguay.com/blog",
+  "default_author": "Terras Paraguay",
+  "default_og_image": "/images/blog/default-og.jpg",
+  "categories": [
+    {
+      "slug": "mercado-local",
+      "name": "Mercado Local",
+      "description": "Análises do mercado imobiliário paraguaio"
+    },
+    {
+      "slug": "dicas-compra",
+      "name": "Dicas de Compra",
+      "description": "Guias práticos para comprar imóveis"
+    },
+    {
+      "slug": "investimento",
+      "name": "Investimento",
+      "description": "Oportunidades de investimento"
+    },
+    {
+      "slug": "lifestyle",
+      "name": "Lifestyle",
+      "description": "Viver no Paraguay"
+    }
+  ]
+}

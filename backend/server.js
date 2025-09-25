@@ -7,11 +7,20 @@ const PORT = 3001;
 // Middleware
 app.use(cors({
   origin: [
-    'http://localhost:3003', 
-    'http://localhost:3000',
-    'http://cliente2.localhost:3003'
+    'http://localhost:3003',
+    'https://terrasnoparaguay.com',
+    'https://www.terrasnoparaguay.com',
+    'https://api.terrasnoparaguay.com'
   ]
 }));
+
+//app.use(cors({
+ // origin: [
+   // 'http://localhost:3003',
+   // 'https://seudominio.com',
+  //  'https://www.seudominio.com'
+ // ]
+//}));
 app.use(express.json());
 
 // Mock Database - Propriedades Terras Paraguay Expandida
@@ -519,6 +528,135 @@ app.post('/api/admin/login', (req, res) => {
     });
   }
 });
+
+// CRIAR PROPRIEDADE
+app.post('/api/properties', (req, res) => {
+  const newProperty = {
+    id: mockProperties.length + 1,
+    ...req.body,
+    createdAt: new Date().toISOString().split('T')[0],
+    views: 0,
+    rating: 0,
+    reviews: 0
+  };
+  
+  mockProperties.push(newProperty);
+  
+  res.status(201).json({
+    success: true,
+    data: newProperty,
+    message: 'Propriedade criada com sucesso'
+  });
+});
+
+// EDITAR PROPRIEDADE
+app.put('/api/properties/:id', (req, res) => {
+  const index = mockProperties.findIndex(p => p.id === parseInt(req.params.id));
+  
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: 'Propriedade não encontrada'
+    });
+  }
+  
+  mockProperties[index] = {
+    ...mockProperties[index],
+    ...req.body,
+    id: parseInt(req.params.id)
+  };
+  
+  res.json({
+    success: true,
+    data: mockProperties[index],
+    message: 'Propriedade atualizada com sucesso'
+  });
+});
+
+// DELETAR PROPRIEDADE
+app.delete('/api/properties/:id', (req, res) => {
+  const index = mockProperties.findIndex(p => p.id === parseInt(req.params.id));
+  
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: 'Propriedade não encontrada'
+    });
+  }
+  
+  const deleted = mockProperties.splice(index, 1);
+  
+  res.json({
+    success: true,
+    data: deleted[0],
+    message: 'Propriedade deletada com sucesso'
+  });
+});
+
+// CRIAR PROPRIEDADE
+app.post('/api/properties', (req, res) => {
+  const newProperty = {
+    id: mockProperties.length + 1,
+    ...req.body,
+    createdAt: new Date().toISOString().split('T')[0],
+    views: 0,
+    rating: 0,
+    reviews: 0
+  };
+  
+  mockProperties.push(newProperty);
+  
+  res.status(201).json({
+    success: true,
+    data: newProperty,
+    message: 'Propriedade criada com sucesso'
+  });
+});
+
+// EDITAR PROPRIEDADE
+app.put('/api/properties/:id', (req, res) => {
+  const index = mockProperties.findIndex(p => p.id === parseInt(req.params.id));
+  
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: 'Propriedade não encontrada'
+    });
+  }
+  
+  mockProperties[index] = {
+    ...mockProperties[index],
+    ...req.body,
+    id: parseInt(req.params.id)
+  };
+  
+  res.json({
+    success: true,
+    data: mockProperties[index],
+    message: 'Propriedade atualizada com sucesso'
+  });
+});
+
+// DELETAR PROPRIEDADE
+app.delete('/api/properties/:id', (req, res) => {
+  const index = mockProperties.findIndex(p => p.id === parseInt(req.params.id));
+  
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: 'Propriedade não encontrada'
+    });
+  }
+  
+  const deleted = mockProperties.splice(index, 1);
+  
+  res.json({
+    success: true,
+    data: deleted[0],
+    message: 'Propriedade deletada com sucesso'
+  });
+});
+
 
 // ROTA DE DEBUG
 app.get('/api/debug/routes', (req, res) => {

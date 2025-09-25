@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 
-const AdminLogin = ({ onLoginSuccess }) => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false);
+const AdminLogin = ({ onLogin }) => {
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:3001/api/admin/login', {
@@ -21,141 +24,95 @@ const AdminLogin = ({ onLoginSuccess }) => {
 
       const data = await response.json();
 
-      if (data.success) {
-        localStorage.setItem('admin-token', data.token);
-        localStorage.setItem('admin-user', JSON.stringify(data.user));
-        onLoginSuccess(data.user);
+      if (response.ok) {
+        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+        onLogin(data.user);
       } else {
-        setError(data.message || 'Erro no login');
+        setError(data.message || 'Email ou senha incorretos');
       }
-    } catch (err) {
-      setError('Erro de conexão com o servidor');
+    } catch (error) {
+      console.error('Erro no login:', error);
+      setError('Erro ao conectar com o servidor');
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #059669 0%, #047857 100%)'
-    }}>
-      <div style={{
-        background: 'white',
-        padding: '40px',
-        borderRadius: '12px',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-        width: '100%',
-        maxWidth: '400px'
-      }}>
-        <h2 style={{
-          textAlign: 'center',
-          marginBottom: '30px',
-          color: '#059669',
-          fontSize: '28px',
-          fontWeight: '600'
-        }}>
-          Admin Login
-        </h2>
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value
+    });
+  };
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: '500',
-              color: '#374151'
-            }}>
-              Email:
-            </label>
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #059669, #047857)' }}>
+      <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.2)', width: '100%', maxWidth: '400px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#111' }}>🏢 Admin Panel</h1>
+          <p style={{ color: '#666', marginTop: '8px' }}>Painel Imobiliário</p>
+        </div>
+
+        {error && (
+          <div style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#fee', border: '1px solid #fcc', color: '#c33', borderRadius: '8px' }}>
+            ⚠️ {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>📧 Email</label>
             <input
               type="email"
+              name="email"
               value={credentials.email}
-              onChange={(e) => setCredentials({...credentials, email: e.target.value})}
+              onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '16px'
-              }}
+              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '16px' }}
               placeholder="admin@terrasparaguay.com"
             />
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: '8px',
-              fontWeight: '500',
-              color: '#374151'
-            }}>
-              Senha:
-            </label>
+          <div>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>🔒 Senha</label>
             <input
               type="password"
+              name="password"
               value={credentials.password}
-              onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+              onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                fontSize: '16px'
-              }}
-              placeholder="admin123"
+              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '16px' }}
+              placeholder="••••••••"
             />
           </div>
-
-          {error && (
-            <div style={{
-              background: '#fef2f2',
-              color: '#dc2626',
-              padding: '12px',
-              borderRadius: '8px',
-              marginBottom: '20px',
-              textAlign: 'center'
-            }}>
-              {error}
-            </div>
-          )}
 
           <button
             type="submit"
             disabled={loading}
-            style={{
-              width: '100%',
-              padding: '14px',
-              background: '#059669',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: '600',
+            style={{ 
+              width: '100%', 
+              padding: '14px', 
+              backgroundColor: '#059669', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '8px', 
+              fontSize: '16px', 
+              fontWeight: '600', 
               cursor: loading ? 'not-allowed' : 'pointer',
               opacity: loading ? 0.7 : 1
             }}
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? '🔄 Entrando...' : '🚀 Entrar'}
           </button>
         </form>
 
-        <div style={{
-          marginTop: '20px',
-          padding: '12px',
-          background: '#f3f4f6',
-          borderRadius: '8px',
-          fontSize: '14px',
-          color: '#6b7280'
-        }}>
-          <strong>Credenciais de teste:</strong><br />
-          admin@terrasparaguay.com / admin123<br />
-          admin@cliente2.com / cliente123
+        <div style={{ marginTop: '24px', padding: '16px', backgroundColor: '#fef3c7', border: '1px solid #fde68a', borderRadius: '8px' }}>
+          <p style={{ fontSize: '14px', color: '#92400e', margin: 0 }}>
+            <strong>Demo:</strong><br/>
+            admin@terrasparaguay.com<br/>
+            admin123
+          </p>
         </div>
       </div>
     </div>
