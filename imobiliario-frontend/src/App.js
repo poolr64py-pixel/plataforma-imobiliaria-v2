@@ -262,7 +262,7 @@ function App() {
     setLoading(true);
     try {
       console.log(`🔄 [FETCH] Buscando página ${page}...`);
-      const url = `${API_BASE}/api/properties?page=${page}&limit=${propertiesPerPage}&sortBy=createdAt&sortOrder=desc`;
+      const url = `${API_BASE}/properties?page=${page}&limit=${propertiesPerPage}&sortBy=createdAt&sortOrder=desc`;
       const res = await fetch(url);
       const data = await res.json();
       
