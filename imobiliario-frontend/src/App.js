@@ -443,7 +443,10 @@ const AdminPage = () => {
         <CurrencyRates />
         <header style={{ background: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', position: 'sticky', top: 0, zIndex: 40 }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 16px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 'bold', fontSize: '20px' }}>{tenantConfig?.name || 'Terras Paraguay'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+  <img src="/logo.png" alt="Terras Paraguay" style={{ height: '40px' }} />
+  <span style={{ fontWeight: 'bold', fontSize: '20px' }}>{tenantConfig?.name || 'Terras Paraguay'}</span>
+</div>
             <button onClick={() => setShowContactModal(true)} style={{ background: tenantConfig?.primaryColor || '#059669', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>Contato</button>
           </div>
         </header>
